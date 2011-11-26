@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%= render 'layouts/stylesheets' %>
+  </head>
+<body>
+  <div class="container">
+    <%= render 'layouts/header' %>
+    <section class="round">
+      <%= yield %>
+    </section>
+    <%= render 'layouts/footer' %>
+    <% debug(params) if Rails.env.development? %>
+  </div>
+
+</body>
+</html>
