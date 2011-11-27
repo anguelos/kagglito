@@ -6,8 +6,11 @@ class CreateCompetitions < ActiveRecord::Migration
       t.datetime :starttime
       t.datetime :endtime
       t.boolean :publicscore
-
+	  t.references :User
+      t.references :Dataset
       t.timestamps
     end
+	add_index :competitions, :User_id
+	add_index :competitions, :Dataset_id
   end
 end

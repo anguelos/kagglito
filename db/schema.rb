@@ -31,18 +31,26 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
     t.datetime "starttime"
     t.datetime "endtime"
     t.boolean  "publicscore"
+    t.integer  "User_id"
+    t.integer  "Dataset_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "competitions", ["Dataset_id"], :name => "index_competitions_on_Dataset_id"
+  add_index "competitions", ["User_id"], :name => "index_competitions_on_User_id"
 
   create_table "datasets", :force => true do |t|
     t.string   "name"
     t.boolean  "gtpublic"
     t.boolean  "inputpublic"
     t.text     "description"
+    t.integer  "User_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "datasets", ["User_id"], :name => "index_datasets_on_User_id"
 
   create_table "evaluators", :force => true do |t|
     t.string   "name"

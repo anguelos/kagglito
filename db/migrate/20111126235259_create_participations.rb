@@ -4,7 +4,6 @@ class CreateParticipations < ActiveRecord::Migration
       t.boolean :submissionspublic
       t.references :User
       t.references :Competition
-
       t.timestamps
     end
     add_index :participations, :User_id
