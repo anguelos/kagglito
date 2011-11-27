@@ -1,0 +1,41 @@
+<%= form_for(@chalenge) do |f| %>
+  <% if @chalenge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@chalenge.errors.count, "error") %> prohibited this chalenge from being saved:</h2>
+
+      <ul>
+      <% @chalenge.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :gt %><br />
+    <%= f.text_field :gt %>
+  </div>
+  <div class="field">
+    <%= f.label :gtfileext %><br />
+    <%= f.text_field :gtfileext %>
+  </div>
+  <div class="field">
+    <%= f.label :input %><br />
+    <%= f.text_field :input %>
+  </div>
+  <div class="field">
+    <%= f.label :input %><br />
+    <%= f.text_field :input %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :Dataset %><br />
+    <%= f.text_field :Dataset %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

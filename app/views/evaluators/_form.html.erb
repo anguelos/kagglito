@@ -1,0 +1,41 @@
+<%= form_for(@evaluator) do |f| %>
+  <% if @evaluator.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@evaluator.errors.count, "error") %> prohibited this evaluator from being saved:</h2>
+
+      <ul>
+      <% @evaluator.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :minvalue %><br />
+    <%= f.text_field :minvalue %>
+  </div>
+  <div class="field">
+    <%= f.label :maxvalue %><br />
+    <%= f.text_field :maxvalue %>
+  </div>
+  <div class="field">
+    <%= f.label :src %><br />
+    <%= f.text_field :src %>
+  </div>
+  <div class="field">
+    <%= f.label :User %><br />
+    <%= f.text_field :User %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

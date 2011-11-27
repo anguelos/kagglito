@@ -1,0 +1,45 @@
+<%= form_for(@submission) do |f| %>
+  <% if @submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+      <% @submission.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :responce %><br />
+    <%= f.text_field :responce %>
+  </div>
+  <div class="field">
+    <%= f.label :responcefileext %><br />
+    <%= f.text_field :responcefileext %>
+  </div>
+  <div class="field">
+    <%= f.label :announced %><br />
+    <%= f.datetime_select :announced %>
+  </div>
+  <div class="field">
+    <%= f.label :submited %><br />
+    <%= f.datetime_select :submited %>
+  </div>
+  <div class="field">
+    <%= f.label :score %><br />
+    <%= f.text_field :score %>
+  </div>
+  <div class="field">
+    <%= f.label :Chalenge %><br />
+    <%= f.text_field :Chalenge %>
+  </div>
+  <div class="field">
+    <%= f.label :participation %><br />
+    <%= f.text_field :participation %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

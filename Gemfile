@@ -45,3 +45,8 @@ gem 'jquery-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
+gem 'devise', '>=1.5.1' 
+gem 'narray' 
+gem 'rmagick' 
+gem 'imageruby' 
+gem 'imageruby-bmp' 

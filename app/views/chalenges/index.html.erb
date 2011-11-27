@@ -1,0 +1,33 @@
+<h1>Listing chalenges</h1>
+
+<table>
+  <tr>
+    <th>Gt</th>
+    <th>Gtfileext</th>
+    <th>Input</th>
+    <th>Input</th>
+    <th>Name</th>
+    <th>Dataset</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @chalenges.each do |chalenge| %>
+  <tr>
+    <td><%= chalenge.gt %></td>
+    <td><%= chalenge.gtfileext %></td>
+    <td><%= chalenge.input %></td>
+    <td><%= chalenge.input %></td>
+    <td><%= chalenge.name %></td>
+    <td><%= chalenge.Dataset %></td>
+    <td><%= link_to 'Show', chalenge %></td>
+    <td><%= link_to 'Edit', edit_chalenge_path(chalenge) %></td>
+    <td><%= link_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Chalenge', new_chalenge_path %>

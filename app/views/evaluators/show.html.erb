@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @evaluator.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @evaluator.description %>
+</p>
+
+<p>
+  <b>Minvalue:</b>
+  <%= @evaluator.minvalue %>
+</p>
+
+<p>
+  <b>Maxvalue:</b>
+  <%= @evaluator.maxvalue %>
+</p>
+
+<p>
+  <b>Src:</b>
+  <%= @evaluator.src %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @evaluator.User %>
+</p>
+
+
+<%= link_to 'Edit', edit_evaluator_path(@evaluator) %> |
+<%= link_to 'Back', evaluators_path %>

@@ -50,5 +50,11 @@ module Kagglito
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    #anguelos start 
+    #devise requirements
+    config.action_mailer.default_url_options = { :host => 'localhost:3000' } #should change with deployment
+    config.assets.initialize_on_precompile = false #proposed by devise for heroku compatibility
+
+    #angelos end
   end
 end

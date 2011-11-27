@@ -11,22 +11,97 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111119020305) do
+ActiveRecord::Schema.define(:version => 20111127001452) do
+
+  create_table "chalenges", :force => true do |t|
+    t.binary   "gt"
+    t.string   "gtfileext"
+    t.binary   "input",      :limit => 255
+    t.string   "name"
+    t.integer  "Dataset_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "chalenges", ["Dataset_id"], :name => "index_chalenges_on_Dataset_id"
 
   create_table "competitions", :force => true do |t|
-    t.string   "title"
+    t.string   "name"
     t.text     "description"
-    t.datetime "starting_time"
-    t.datetime "ending_time"
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.boolean  "publicscore"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", :force => true do |t|
+  create_table "datasets", :force => true do |t|
     t.string   "name"
-    t.string   "email"
+    t.boolean  "gtpublic"
+    t.boolean  "inputpublic"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "evaluators", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.float    "minvalue"
+    t.float    "maxvalue"
+    t.binary   "src"
+    t.integer  "User_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "evaluators", ["User_id"], :name => "index_evaluators_on_User_id"
+
+  create_table "participations", :force => true do |t|
+    t.boolean  "submissionspublic"
+    t.integer  "User_id"
+    t.integer  "Competition_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "participations", ["Competition_id"], :name => "index_participations_on_Competition_id"
+  add_index "participations", ["User_id"], :name => "index_participations_on_User_id"
+
+  create_table "submissions", :force => true do |t|
+    t.binary   "responce"
+    t.string   "responcefileext"
+    t.datetime "announced"
+    t.datetime "submited"
+    t.float    "score"
+    t.integer  "Chalenge_id"
+    t.integer  "participation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "submissions", ["Chalenge_id"], :name => "index_submissions_on_Chalenge_id"
+  add_index "submissions", ["participation_id"], :name => "index_submissions_on_participation_id"
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",                         :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "password"
+    t.text     "profile"
+    t.boolean  "isadmin"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

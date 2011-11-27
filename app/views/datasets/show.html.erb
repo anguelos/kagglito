@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @dataset.name %>
+</p>
+
+<p>
+  <b>Gtpublic:</b>
+  <%= @dataset.gtpublic %>
+</p>
+
+<p>
+  <b>Inputpublic:</b>
+  <%= @dataset.inputpublic %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @dataset.description %>
+</p>
+
+
+<%= link_to 'Edit', edit_dataset_path(@dataset) %> |
+<%= link_to 'Back', datasets_path %>

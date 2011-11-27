@@ -1,0 +1,29 @@
+<h1>Listing datasets</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Gtpublic</th>
+    <th>Inputpublic</th>
+    <th>Description</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @datasets.each do |dataset| %>
+  <tr>
+    <td><%= dataset.name %></td>
+    <td><%= dataset.gtpublic %></td>
+    <td><%= dataset.inputpublic %></td>
+    <td><%= dataset.description %></td>
+    <td><%= link_to 'Show', dataset %></td>
+    <td><%= link_to 'Edit', edit_dataset_path(dataset) %></td>
+    <td><%= link_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dataset', new_dataset_path %>

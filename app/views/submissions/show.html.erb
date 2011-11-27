@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Responce:</b>
+  <%= @submission.responce %>
+</p>
+
+<p>
+  <b>Responcefileext:</b>
+  <%= @submission.responcefileext %>
+</p>
+
+<p>
+  <b>Announced:</b>
+  <%= @submission.announced %>
+</p>
+
+<p>
+  <b>Submited:</b>
+  <%= @submission.submited %>
+</p>
+
+<p>
+  <b>Score:</b>
+  <%= @submission.score %>
+</p>
+
+<p>
+  <b>Chalenge:</b>
+  <%= @submission.Chalenge %>
+</p>
+
+<p>
+  <b>Participation:</b>
+  <%= @submission.participation %>
+</p>
+
+
+<%= link_to 'Edit', edit_submission_path(@submission) %> |
+<%= link_to 'Back', submissions_path %>
