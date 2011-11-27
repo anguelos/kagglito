@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111127004032) do
+ActiveRecord::Schema.define(:version => 20111127130623) do
 
   create_table "chalenges", :force => true do |t|
     t.binary   "gt"
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(:version => 20111127004032) do
   add_index "participations", ["User_id"], :name => "index_participations_on_User_id"
 
   create_table "submissions", :force => true do |t|
-    t.binary   "responce"
-    t.string   "responcefileext"
+    t.binary   "response"
+    t.string   "responsefileext"
     t.datetime "announced"
     t.datetime "submited"
     t.float    "score"

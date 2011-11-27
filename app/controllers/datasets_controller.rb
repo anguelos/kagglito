@@ -1,6 +1,41 @@
 class DatasetsController < ApplicationController
   # GET /datasets
   # GET /datasets.json
+	def parseZipFile(fin)
+		allData = Hash.new	
+		Zip::ZipFile.open(fin) do |zip_file|
+		    zip_file.each do |f|
+     			if f.name[-1]!='/'
+					dname=f.name.split('/')[-2]
+					allData[dname]=Hash.new
+				end
+			end
+		end
+		Zip::ZipFile.open(fin) do |zip_file|
+			zip_file.each do |f|
+				fdata=zip_file.read(f.name)
+				if f.name[-1]!='/' && f.name.split['/'][-1].split('.').length()>=2
+					dname=f.name.split('/')[-2]
+					if f.name.split('/')[-1].split('.')[-2]=='in'
+						allData[dname]['in']=fdata
+						allData[dname]['inFnameExt']=f.name.split('.')[-1]
+						allData[dname]['name']=f.name.split('.')[-3]
+					end
+					if f.name.split('/')[-1].split('.')[-2]=='gt'
+						allData[dname]['gt']=fdata
+						allData[dname]['gtFnameExt']=f.name.split('.')[-1]
+					end
+				end
+			 #puts fdata
+			end
+		end
+		return allData
+	end
+
+
+
+
+
   def index
     @datasets = Dataset.all
 
@@ -41,7 +76,6 @@ class DatasetsController < ApplicationController
   # POST /datasets.json
   def create
     @dataset = Dataset.new(params[:dataset])
-
     respond_to do |format|
       if @dataset.save
         format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }

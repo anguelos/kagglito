@@ -54,7 +54,9 @@ module Kagglito
     #devise requirements
     config.action_mailer.default_url_options = { :host => 'localhost:3000' } #should change with deployment
     config.assets.initialize_on_precompile = false #proposed by devise for heroku compatibility
-
+    #autoloading lib dirs for helper functions
+    config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
     #angelos end
   end
 end

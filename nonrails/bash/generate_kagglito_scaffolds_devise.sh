@@ -25,7 +25,7 @@ rails generate scaffold Participation submissionspublic:boolean User:references 
 
 rails generate scaffold Chalenge gt:binary gtfileext:string input:binary input:string name:string Dataset:references
 
-rails generate scaffold Submission responce:binary responcefileext:string announced:datetime submited:datetime score:float Chalenge:references participation:references
+rails generate scaffold Submission response:binary responsefileext:string announced:datetime submited:datetime score:float Chalenge:references participation:references
 
 #destroy
 
