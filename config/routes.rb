@@ -2,6 +2,8 @@ Kagglito::Application.routes.draw do
   
   
  
+  devise_for :users
+
   resources :submissions
 
   resources :chalenges
@@ -13,8 +15,6 @@ Kagglito::Application.routes.draw do
   resources :evaluators
 
   resources :datasets
-
-  devise_for :users
 
   # route to the pages - creates 2 helpers to use in the controllers and views: f.ex. 1. contact_path 2. contact_url (to have complete url)
   match '/contact', :to => 'pages#contact'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111127001452) do
+ActiveRecord::Schema.define(:version => 20111127004032) do
 
   create_table "chalenges", :force => true do |t|
     t.binary   "gt"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(:version => 20111127001452) do
   add_index "submissions", ["participation_id"], :name => "index_submissions_on_participation_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email"
+    t.string   "email",                                 :default => "", :null => false
     t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -94,11 +94,11 @@ ActiveRecord::Schema.define(:version => 20111127001452) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "password"
-    t.text     "profile"
-    t.boolean  "isadmin"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "profile"
+    t.string   "password"
+    t.boolean  "isadmin"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
