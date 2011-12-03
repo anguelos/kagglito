@@ -15,7 +15,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.timestamps
       t.text :profile
       t.string :password
-      t.boolean :isadmin
+      t.boolean :isadmin,:default => false
     end
 
     add_index :users, :email,                :unique => true

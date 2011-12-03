@@ -21,9 +21,9 @@
     <td><%= chalenge.input %></td>
     <td><%= chalenge.name %></td>
     <td><%= chalenge.Dataset %></td>
-    <td><%= link_to 'Show', chalenge %></td>
-    <td><%= link_to 'Edit', edit_chalenge_path(chalenge) %></td>
-    <td><%= link_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= button_to 'Show', chalenge %></td>
+    <td><%= button_to 'Edit', edit_chalenge_path(chalenge) %></td>
+    <td><%= button_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>

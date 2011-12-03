@@ -4,7 +4,7 @@ class CreateChalenges < ActiveRecord::Migration
       t.binary :gt
       t.string :gtfileext
       t.binary :input
-      t.string :input
+      t.string :inputfileext
       t.string :name
       t.references :Dataset
 

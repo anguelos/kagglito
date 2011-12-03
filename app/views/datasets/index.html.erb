@@ -3,9 +3,10 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Gtpublic</th>
-    <th>Inputpublic</th>
-    <th>Description</th>
+	<th>Description</th>
+    <th>Publish groundtruths</th>
+    <th>Publish inputs</th>
+    <th>Owner</th>
     <th></th>
     <th></th>
     <th></th>
@@ -14,12 +15,15 @@
 <% @datasets.each do |dataset| %>
   <tr>
     <td><%= dataset.name %></td>
+	<td><%= dataset.description %></td>
     <td><%= dataset.gtpublic %></td>
     <td><%= dataset.inputpublic %></td>
-    <td><%= dataset.description %></td>
+	<td><%= User.find(dataset.User_id).email.split('@')[0] %></td>
     <td><%= link_to 'Show', dataset %></td>
     <td><%= link_to 'Edit', edit_dataset_path(dataset) %></td>
-    <td><%= link_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
+
+	
   </tr>
 <% end %>
 </table>

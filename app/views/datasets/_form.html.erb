@@ -1,4 +1,4 @@
-<%= form_for(@dataset) do |f| %>
+<%= form_for(@dataset,:html=>{:multipart=>true}) do |f| %>
   <% if @dataset.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@dataset.errors.count, "error") %> prohibited this dataset from being saved:</h2>
@@ -26,6 +26,10 @@
   <div class="field">
     <%= f.label :description %><br />
     <%= f.text_area :description %>
+  </div>
+  <div class="field">
+	<%= f.label "data" %>
+	<%= file_field_tag 'zipfile' %>
   </div>
   <div class="actions">
     <%= f.submit %>
