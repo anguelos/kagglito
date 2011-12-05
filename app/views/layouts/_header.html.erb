@@ -36,6 +36,9 @@
 		<%if user_signed_in? and (current_user.id == User.find(:all,:limit=>1)[0].id )%>
 		<li><%= link_to "Administrators", manageadmin_path %></li>
 		<%end%>
+		<%if user_signed_in? %>
+		<li><%= link_to "Userstats", userstats_path %></li>
+		<%end%>
 		<li><%= link_to "Conpetitons", competitions_path %></li>
 		<li><%= link_to "Datasets", datasets_path %></li>
 		<li><%= link_to "Evaluators", competitions_path %></li>

@@ -1,0 +1,27 @@
+	<% if user_signed_in? %>
+    <h1>Users Activity</h1>
+	<table>
+	<tr><th>Email</th><th>Nb Datasets</th><th>Nb Evaluators</th><th>Nb Competitions</th><th>Nb Participations</th><tr>
+	<% User.all.each do |user| %>
+	<tr>
+	<td>
+	<%if user.isadmin %>
+	<font color="red">
+	<%else %>
+	<font color="blue">
+	<%end %>
+	<%= user.email %>
+	</td>
+	<td><%= String(Dataset.find(:all,:conditions => { :User_id => user.id}).length)%></td>
+	<td><%= String(Evaluator.find(:all,:conditions => { :User_id => user.id}).length)%></td>
+	<td><%= String(Competition.find(:all,:conditions => { :User_id => user.id}).length)%></td>
+	<td><%= String(Participation.find(:all,:conditions => { :User_id => user.id}).length)%></td>
+	</tr>
+	<% end %>
+	<table>
+	<%else%>
+	<H1>Not authorised</H1>
+	<%=link_to('Sign in',new_user_session_path)%> or 	
+	<%=link_to('Sign up',new_user_registration_path) %> to
+	view userstats
+	<% end %>

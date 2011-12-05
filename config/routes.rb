@@ -25,6 +25,7 @@ Kagglito::Application.routes.draw do
 
   # route to the pages - creates 2 helpers to use in the controllers and views: f.ex. 1. contact_path 2. contact_url (to have complete url)
   match '/manageadmin',:to =>'pages#manageadmin'
+  match '/userstats',:to =>'pages#userstats'
 
   match '/contact', :to => 'pages#contact'
   match '/about', :to => 'pages#about'

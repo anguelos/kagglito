@@ -1,1 +1,15 @@
-Hello
+
+Getting started:
+
+1)create a user (sign-up)
+2)login
+3)goto to the Administrators section and grant him administrative priledges
+4)goto to datasets and create a new dataset by uploading a zipfile
+	The contents of the zipfile should be pairs of images named as
+		blah_1.in.png, blah_1.gt.png
+		blah_2.in.png, blah_2.gt.png
+		blah_3.in.png, blah_3.gt.png
+		blah_4.in.png, blah_4.gt.png
+	all in the same folder.
+
+
