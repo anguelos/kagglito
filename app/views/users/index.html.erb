@@ -1,0 +1,35 @@
+<h1>Listing Users</h1>
+
+<table>
+  <tr>
+    <th>name</th>
+	<th>Nb participations</th>
+	<th>Nb competions</th>
+	<th>Nb datasets</th>
+    <th></th>
+  </tr>
+
+<% @users.each do |user| %>
+  <tr>
+	<td>
+	<% if user.isadmin %>
+	<font color="red">
+	<% else %>
+
+	<font color="blue">
+
+	<% end %>
+    <%= user.email.split('@')[0] %>
+	</font>
+	</td>
+	<td><%= String(Participation.find(:all,:conditions => { :User_id => user.id}).length)%> </td>
+	<td><%= String(Competition.find(:all,:conditions => { :User_id => user.id}).length)%> </td>
+	<td><%= String(Dataset.find(:all,:conditions => { :User_id => user.id}).length)%> </td>
+	<td>
+	<%= button_to "Show" ,user, method: :get %>
+	</td>
+  </tr>
+<% end %>
+</table>
+
+

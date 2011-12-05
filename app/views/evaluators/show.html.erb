@@ -26,8 +26,8 @@
 </p>
 
 <p>
-  <b>User:</b>
-  <%= @evaluator.User %>
+  <b>Owner:</b>
+  <%= User.find(@evaluator.User_id).email.split('@')[0] %>
 </p>
 
 

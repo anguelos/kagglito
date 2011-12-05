@@ -1,0 +1,20 @@
+    <h1>Users</h1>
+    <% if user_signed_in? and (current_user.id == User.find(:all,:limit=>1)[0].id )%>
+	<table>
+	<tr><th>Email</th><th></th><tr>
+	<% User.all.each do |user| %>
+	<tr>
+	<td><%= user.email %></td>
+	<td>
+	<%if user.isadmin %>
+	<%= button_to('Revoke Admin',{:id => user.id,method: :post} )%>
+	<%else %>
+	<%= button_to('Grant Admin',{:id => user.id,method: :post} )%>
+	<%end %>
+	</td>
+	</tr>
+	<% end %>
+	<table>
+	<% else %>
+	<H1>Only the most senior user can grant and revoke admin</H1>
+    <% end %>

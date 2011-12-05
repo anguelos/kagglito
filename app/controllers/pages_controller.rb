@@ -14,5 +14,11 @@ class PagesController < ApplicationController
   def help
     @title = "Help"
   end
-
+  def manageadmin
+	if params!=nil and params[:id]!=nil
+		user=User.find(params[:id])
+		user.isadmin=not(user.isadmin)
+		user.save
+	end
+  end
 end

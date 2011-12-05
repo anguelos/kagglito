@@ -5,10 +5,13 @@ require 'zip/zipfilesystem'
 class DatasetsController < ApplicationController
   # GET /datasets
   # GET /datasets.json
-	before_filter :authenticate_user!, :except => [:index]
+	before_filter :authenticate_user!, :except => [:index,:show]
 	#before_filter :user_admin, :except => [:show,:index]
 	#before_filter :user_owns,:except => [:show,:index,:new,:create]
-
+	
+	def createZipFile(dataset)
+		
+	end
 	def parseZipFile(fin)
 		allData = Hash.new
 		zip_file=Zip::ZipFile.open(fin)
@@ -82,19 +85,21 @@ class DatasetsController < ApplicationController
 	@dataset.User_id=current_user.id
     respond_to do |format|
       if @dataset.save
-		chalAsDict=parseZipFile(File.open(params['zipfile'].path))
-		count=1;
-		chalAsDict.keys.each do
-			|k|
-			chal=Chalenge.new()
-			chal.Dataset_id=@dataset.id
-			chal.name=@dataset.name+'.'+sprintf('%05d',count)
-			chal.input=chalAsDict[k]['in']
-			chal.gt=chalAsDict[k]['gt']
-			chal.inputfileext=chalAsDict[k]['inFnameExt']
-			chal.gtfileext=chalAsDict[k]['gtFnameExt']
-			chal.save
-			count=count+1
+		if params['zipfile'].present?
+			chalAsDict=parseZipFile(File.open(params['zipfile'].path))
+			count=1;
+			chalAsDict.keys.each do
+				|k|
+				chal=Chalenge.new()
+				chal.Dataset_id=@dataset.id
+				chal.name=@dataset.name+'.'+sprintf('%05d',count)
+				chal.input=chalAsDict[k]['in']
+				chal.gt=chalAsDict[k]['gt']
+				chal.inputfileext=chalAsDict[k]['inFnameExt']
+				chal.gtfileext=chalAsDict[k]['gtFnameExt']
+				chal.save
+				count=count+1
+			end
 		end
         format.html { redirect_to @dataset, notice: 'Dataset was successfully created.' }
         format.json { render json: @dataset, status: :created, location: @dataset }
@@ -112,6 +117,22 @@ class DatasetsController < ApplicationController
 	if current_user.id==@dataset.User_id
 		respond_to do |format|
 		  if @dataset.update_attributes(params[:dataset])
+			if params['zipfile'].present?
+				chalAsDict=parseZipFile(File.open(params['zipfile'].path))
+				count=1;
+				chalAsDict.keys.each do
+					|k|
+					chal=Chalenge.new()
+					chal.Dataset_id=@dataset.id
+					chal.name=@dataset.name+'.'+sprintf('%05d',count)
+					chal.input=chalAsDict[k]['in']
+					chal.gt=chalAsDict[k]['gt']
+					chal.inputfileext=chalAsDict[k]['inFnameExt']
+					chal.gtfileext=chalAsDict[k]['gtFnameExt']
+					chal.save
+					count=count+1
+				end
+			end
 		    format.html { redirect_to @dataset, notice: 'Dataset was successfully updated.' }
 		    format.json { head :ok }
 		  else
@@ -129,6 +150,11 @@ class DatasetsController < ApplicationController
   def destroy
     @dataset = Dataset.find(params[:id])
 	if current_user.id==@dataset.User_id
+		chl=Chalenge.find(:all,:conditions => { :Dataset_id => @dataset.id})
+		chl.each do
+			|chalenge|
+			chalenge.destroy
+		end
 		@dataset.destroy
 		respond_to do |format|
 		  format.html { redirect_to datasets_url }

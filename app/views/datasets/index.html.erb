@@ -7,6 +7,7 @@
     <th>Publish groundtruths</th>
     <th>Publish inputs</th>
     <th>Owner</th>
+	<th>Nb Chalenges</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,15 +20,19 @@
     <td><%= dataset.gtpublic %></td>
     <td><%= dataset.inputpublic %></td>
 	<td><%= User.find(dataset.User_id).email.split('@')[0] %></td>
-    <td><%= link_to 'Show', dataset %></td>
-    <td><%= link_to 'Edit', edit_dataset_path(dataset) %></td>
+	<td><%= String(Chalenge.find(:all,:conditions => { :Dataset_id => dataset.id}).length) %></td>
+    <td><%= button_to 'Show', dataset, method: :get %></td>
+	<% if user_signed_in? and dataset.User_id == current_user.id %>
+    <td><%= button_to 'Edit', edit_dataset_path(dataset), method: :get %></td>
     <td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
-
-	
+	<% else %>
+	<td></td>	<td></td>
+	<% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
-
+<% if user_signed_in? and current_user.isadmin %>
 <%= link_to 'New Dataset', new_dataset_path %>
+<% end %>

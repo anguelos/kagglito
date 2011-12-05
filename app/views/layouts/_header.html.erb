@@ -3,15 +3,14 @@
       <%= link_to logo, root_path %>
       <nav class="round">
         <ul>
-        <li><%= link_to "Home", root_path %></li>
-        <li><%= link_to "Help", help_path %></li>
+		<li>Session:</li>
         <li>  <!--anguelos start proposed by devise -->
         <% if user_signed_in? %>
 		Signed in as
 		<% if current_user.isadmin%>
 		<font color="red">
 		<% end %>
-	     <%= current_user.email %>
+	     <%= current_user.email.split('@')[0] %>
 		<% if current_user.isadmin %>
 		</font>
 		<% end %>
@@ -20,8 +19,28 @@
         <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
         <% end %>
 	  <!--anguelos end proposed by devise -->
-
         </li>
+
+        <% if ((user_signed_in? )and (current_user.isadmin)) %>
+		<li>
+		<%= link_to "My Datasets" ,%>
+		</li>
+		<% end %>
+
+
         </ul>
       </nav>
+	  <nav class="round">
+	  <ul>
+        <li><%= link_to "Home", root_path %></li>
+		<%if user_signed_in? and (current_user.id == User.find(:all,:limit=>1)[0].id )%>
+		<li><%= link_to "Administrators", manageadmin_path %></li>
+		<%end%>
+		<li><%= link_to "Conpetitons", competitions_path %></li>
+		<li><%= link_to "Datasets", datasets_path %></li>
+		<li><%= link_to "Evaluators", competitions_path %></li>
+		<li><%= link_to "Chalenges", chalenges_path %></li>
+        <li><%= link_to "Help", help_path %></li>
+	  </ul>
+	  </nav>
     </header>

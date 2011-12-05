@@ -1,9 +1,57 @@
 class ChalengesController < ApplicationController
   # GET /chalenges
   # GET /chalenges.json
+
+  def showgt
+    @chalenge = Chalenge.find(params[:id])
+	ds=Dataset.find(@chalenge.Dataset_id)
+	if( not(ds.gtpublic) )and (not(ds.User_id==current_user.id)) 
+		data=File.read(Rails.root.join('public','na.png'))
+		send_data data, :type => 'image/png',:disposition => 'inline'
+	else
+		gtmime=''
+		gtFext=@chalenge.gtfileext.downcase
+		if(gtFext=='png')
+		gtmime='image/png'
+		elsif gtFext=='jpg'
+		    gtmime='image/jpg'
+		elsif gtFext=='bmp'
+		    gtmime='image/bmp'
+		elsif gtFext=='zip'
+		    gtmime='file/zip'
+		elsif gtFext=='csv'
+		    gtmime='file/csv'
+		end
+		send_data @chalenge.gt, :type => gtmime,:disposition => 'inline'
+	end
+  end
+
+  def showinput
+    @chalenge = Chalenge.find(params[:id])
+	ds=Dataset.find(@chalenge.Dataset_id)
+	if( not(ds.inputpublic) )and (not(ds.User_id==current_user.id)) 
+		data=File.read(Rails.root.join('public','na.png'))
+		send_data data, :type => 'image/png',:disposition => 'inline'
+	else
+		inputmime=''
+		inputFext=@chalenge.gtfileext.downcase
+		if(inputFext=='png')
+		inputmime='image/png'
+		elsif inputFext=='jpg'
+		    inputmime='image/jpg'
+		elsif inputFext=='bmp'
+		    inputmime='image/bmp'
+		elsif inputFext=='zip'
+		    inputmime='file/zip'
+		elsif inputFext=='csv'
+		    inputmime='file/csv'
+		end
+		send_data @chalenge.input, :type => inputmime,:disposition => 'inline'
+	end  
+  end
+
   def index
     @chalenges = Chalenge.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @chalenges }
@@ -23,61 +71,71 @@ class ChalengesController < ApplicationController
 
   # GET /chalenges/new
   # GET /chalenges/new.json
-  def new
-    @chalenge = Chalenge.new
+#  def new
+#    @chalenge = Chalenge.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @chalenge }
-    end
-  end
+#    respond_to do |format|
+#      format.html # new.html.erb
+#      format.json { render json: @chalenge }
+#    end
+#  end
 
   # GET /chalenges/1/edit
-  def edit
-    @chalenge = Chalenge.find(params[:id])
-  end
+#  def edit
+#    @chalenge = Chalenge.find(params[:id])
+#  end
 
   # POST /chalenges
   # POST /chalenges.json
-  def create
-    @chalenge = Chalenge.new(params[:chalenge])
+#  def create
+#    @chalenge = Chalenge.new(params[:chalenge])
 
-    respond_to do |format|
-      if @chalenge.save
-        format.html { redirect_to @chalenge, notice: 'Chalenge was successfully created.' }
-        format.json { render json: @chalenge, status: :created, location: @chalenge }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @chalenge.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+#    respond_to do |format|
+#	  if current_user.isadmin
+#      if @chalenge.save
+#        format.html { redirect_to @chalenge, notice: 'Chalenge was successfully created.' }
+#        format.json { render json: @chalenge, status: :created, location: @chalenge }
+#      else
+#        format.html { render action: "new" }
+#        format.json { render json: @chalenge.errors, status: :unprocessable_entity }
+#      end
+#	  else
+#		redirect_to chalenges_path,:alert => 'You must be an administrator to'
+#	  end
+#    end
+#  end
 
   # PUT /chalenges/1
   # PUT /chalenges/1.json
   def update
     @chalenge = Chalenge.find(params[:id])
-
-    respond_to do |format|
-      if @chalenge.update_attributes(params[:chalenge])
-        format.html { redirect_to @chalenge, notice: 'Chalenge was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @chalenge.errors, status: :unprocessable_entity }
-      end
-    end
+	if current_user.id==Dataset.find(@chalenge.Dataset_id).User_id
+		respond_to do |format|
+		  if @chalenge.update_attributes(params[:chalenge])
+		    format.html { redirect_to @chalenge, notice: 'Chalenge was successfully updated.' }
+		    format.json { head :ok }
+		  else
+		    format.html { render action: "edit" }
+		    format.json { render json: @chalenge.errors, status: :unprocessable_entity }
+		  end
+		end
+	else
+		redirect_to chalenges_path,:alert => 'You must own the dataset that contains a chalenge to edit it'
+	end
   end
 
   # DELETE /chalenges/1
   # DELETE /chalenges/1.json
   def destroy
     @chalenge = Chalenge.find(params[:id])
-    @chalenge.destroy
-
-    respond_to do |format|
-      format.html { redirect_to chalenges_url }
-      format.json { head :ok }
-    end
+	if current_user.id==Dataset.find(@chalenge.Dataset_id).User_id
+		@chalenge.destroy
+		respond_to do |format|
+		  format.html { redirect_to chalenges_url }
+		  format.json { head :ok }
+		end
+	else
+		redirect_to chalenges_path,:alert => 'You must own the dataset that contains a chalenge to destroy it'
+	end
   end
 end

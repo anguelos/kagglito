@@ -4,3 +4,23 @@
 
 <%= link_to 'Show', @dataset %> |
 <%= link_to 'Back', datasets_path %>
+
+<p>
+<b>Associated chalenges</b>
+<table>
+  <tr>
+    <th>Name</th>
+	<th>Input</th>
+    <th>Groundtruth</th>
+  </tr>
+
+  <% Chalenge.find(:all,:conditions => { :Dataset_id => @dataset.id}).each do |chalenge| %>
+  <tr>
+  <td><%= chalenge.name %></td>
+  <td><%= link_to(image_tag(url_for(showinput_chalenge_path(chalenge)),:style => "width:100px"),showinput_chalenge_path(chalenge)) %></td>
+  <td><%= link_to(image_tag(url_for(showgt_chalenge_path(chalenge)),:style => "width:100px"),showgt_chalenge_path(chalenge)) %></td>
+  </tr>
+  <% end %>
+</table>
+</p>
+

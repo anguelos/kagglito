@@ -3,7 +3,6 @@
 <table>
   <tr>
     <th>Name</th>
-
     <th>Input</th>
     <th>Input filetype</th>
     <th>Groundtruth</th>
@@ -14,33 +13,24 @@
   </tr>
 
 <% @chalenges.each do |chalenge| %>
+  <% Dataset.find(chalenge.Dataset_id).User_id==current_user.id %>
   <tr>
-	<% ds=Dataset.find(chalenge.Dataset_id);owns=(user_signed_in? and(ds.User_id==current_user.id))%>
     <td><%= chalenge.name %></td>
-	<% if ds.inputpublic or owns %>
+
     <td><%= link_to(image_tag(url_for(showinput_chalenge_path(chalenge)),:style => "width:100px"),showinput_chalenge_path(chalenge)) %></td>
-	<% else %>
-	<td>Not authorised to view</td>
-	<% end %>
+
     <td><%= chalenge.inputfileext %></td>
 
-	<% if ds.gtpublic or owns %>
     <td><%= link_to(image_tag(url_for(showgt_chalenge_path(chalenge)),:style => "width:100px"),showgt_chalenge_path(chalenge)) %></td>
-	<% else %>
-	<td>Not authorised to view</td>
-	<% end %>
 
     <td><%= chalenge.gtfileext %></td>
 
     <td><%= Dataset.find(chalenge.Dataset_id).name %></td>
 
     <td><%= button_to 'Show', chalenge , method: :get %></td>
-	<% if owns %>
     <td><%= button_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
-	<% else %>
-	<td></td>
-	<% end %>
   </tr>
+<% end %>
 <% end %>
 </table>
 
