@@ -2,9 +2,12 @@
 
 <table>
   <tr>
-    <th>Submissionspublic</th>
+	<th>Name</th>
+	<th>Description</th>
+    <th>Publish submissions</th>
     <th>User</th>
     <th>Competition</th>
+    <th>Nb Submissions</th>
     <th></th>
     <th></th>
     <th></th>
@@ -12,16 +15,24 @@
 
 <% @participations.each do |participation| %>
   <tr>
+	<td><%= participation.name[0..10] %></td>
+	<td><%= participation.description[0..30] %></td>
     <td><%= participation.submissionspublic %></td>
-    <td><%= participation.User %></td>
-    <td><%= participation.Competition %></td>
-    <td><%= link_to 'Show', participation %></td>
-    <td><%= link_to 'Edit', edit_participation_path(participation) %></td>
-    <td><%= link_to 'Destroy', participation, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= User.find(participation.User_id).email.split('@')[0] %></td>
+    <td><%= Competition.find(participation.Competition_id).name[0..10] %></td>
+	<td><% String(Submission.find(:all,:conditions => { :Participation_id => participation.id}).length) %></td>
+    <td><%= button_to 'Show', participation,method: :get %></td>
+	<% if current_user.id == participation.User_id %>
+    <td><%= button_to 'Edit', edit_participation_path(participation),method: :get %></td>
+    <td><%= button_to 'Destroy', participation, confirm: 'Are you sure?', method: :delete %></td>
+	<% else %>
+	<td></td><td></td>
+	<% end %>
   </tr>
 <% end %>
 </table>
 
 <br />
-
+<% if user_signed_in? %>
 <%= link_to 'New Participation', new_participation_path %>
+<% end %>

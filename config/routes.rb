@@ -21,7 +21,11 @@ Kagglito::Application.routes.draw do
 
   resources :evaluators
 
-  resources :datasets
+  resources :datasets do
+	member do
+		post :copy
+	end
+  end
 
   # route to the pages - creates 2 helpers to use in the controllers and views: f.ex. 1. contact_path 2. contact_url (to have complete url)
   match '/manageadmin',:to =>'pages#manageadmin'

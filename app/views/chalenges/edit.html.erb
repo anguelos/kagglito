@@ -1,6 +1,49 @@
 <h1>Editing chalenge</h1>
 
-<%= render 'form' %>
+<%= form_for(@chalenge,:html=>{:multipart=>true}) do |f| %>
+  <% if @chalenge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@chalenge.errors.count, "error") %> prohibited this chalenge from being saved:</h2>
 
-<%= link_to 'Show', @chalenge %> |
-<%= link_to 'Back', chalenges_path %>
+      <ul>
+      <% @chalenge.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Input:' %><br />
+  	<%=image_tag(url_for(showinput_chalenge_path(@chalenge)),:style => "width:650px")%><br/>
+	<%= file_field_tag 'gtfile' %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Groundtruth:' %><br />
+  	<%=image_tag(url_for(showgt_chalenge_path(@chalenge)),:style => "width:650px")%><br/>
+	<%= file_field_tag 'gtfile' %>
+  </div>
+  <div class="field">
+	<% dsList =[] ;Dataset.find(:all,:conditions => { :User_id => current_user.id}).each do |ds|%>
+	<% dsList=dsList+[[ds.name ,ds.id]]%>
+	<% end %>
+    <%= f.select :Dataset_id , options_for_select(dsList) %>
+  </div>
+<p>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+</p>
+<% end %>
+
+<hr/>
+<table><tr><td>
+<%= button_to 'Show', @chalenge,method: :get %> 
+</td><td>
+<%= button_to 'All Chalenges', chalenges_path,method: :get %>
+</td></tr></table>

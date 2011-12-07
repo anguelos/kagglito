@@ -6,7 +6,10 @@
     <th>Description</th>
     <th>Starttime</th>
     <th>Endtime</th>
-    <th>Publicscore</th>
+    <th>Publish score</th>
+    <th>Dataset</th>
+    <th>Evaluator</th>
+    <th>Host</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,13 +22,21 @@
     <td><%= competition.starttime %></td>
     <td><%= competition.endtime %></td>
     <td><%= competition.publicscore %></td>
-    <td><%= link_to 'Show', competition %></td>
-    <td><%= link_to 'Edit', edit_competition_path(competition) %></td>
-    <td><%= link_to 'Destroy', competition, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= Dataset.find(competition.Dataset_id).name %></td>
+    <td><%= Evaluator.find(competition.Evaluator_id).name %></td>
+    <td><%= User.find(competition.User_id).email.split('@')[0] %></td>
+    <td><%= button_to 'Show', competition ,method: :get %></td>
+	<% if current_user.id==competition.User_id %>
+    <td><%= button_to 'Edit', edit_competition_path(competition),method: :get  %></td>
+    <td><%= button_to 'Destroy', competition, confirm: 'Are you sure?', method: :delete %></td>
+	<% else %>
+	<td></td><td></td>
+	<%end%>
   </tr>
 <% end %>
 </table>
 
 <br />
-
+<%if user_signed_in? and current_user.isadmin %>
 <%= link_to 'New Competition', new_competition_path %>
+<% end %>

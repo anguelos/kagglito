@@ -28,9 +28,24 @@
     <%= f.datetime_select :endtime %>
   </div>
   <div class="field">
-    <%= f.label :publicscore %><br />
+    <%= f.label 'Publish score interactively' %><br />
     <%= f.check_box :publicscore %>
   </div>
+  <div class="field">
+    <%= f.label 'Evaluator' %><br />
+	<% evalList =[] ;Evaluator.find(:all).each do |eval|%>
+	<% evalList=evalList+[[eval.name ,eval.id]]%>
+	<% end %>
+    <%= f.select :Evaluator_id , options_for_select(evalList) %>
+  </div>
+  <div class="field">
+    <%= f.label 'Dataset' %><br />
+	<% dsList =[] ;Dataset.find(:all).each do |ds|%>
+	<% dsList=dsList+[[ds.name ,ds.id]]%>
+	<% end %>
+    <%= f.select :Dataset_id , options_for_select(dsList) %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

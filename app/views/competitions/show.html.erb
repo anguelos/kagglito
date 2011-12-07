@@ -21,10 +21,29 @@
 </p>
 
 <p>
-  <b>Publicscore:</b>
+  <b>Publish score interactively:</b>
   <%= @competition.publicscore %>
 </p>
 
+<p>
 
+<b>Dataset:</b>
+<%=Dataset.find(@competition.Dataset_id).name %>
+</p>
+
+<p>
+<b>Evaluator:</b>
+<%=Evaluator.find(@competition.Evaluator_id).name %>
+</p>
+
+
+<p>
+<b>Host:</b>
+<%=User.find(@competition.User_id).email.split('@')[0] %>
+</p>
+
+<% if current_user.id == @competition.User_id %>
 <%= link_to 'Edit', edit_competition_path(@competition) %> |
+<% end %>
+
 <%= link_to 'Back', competitions_path %>

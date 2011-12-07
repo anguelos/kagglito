@@ -11,5 +11,6 @@ class CreateEvaluators < ActiveRecord::Migration
       t.timestamps
     end
     add_index :evaluators, :User_id
+	add_index :evaluators, :name,:null => false, :unique => true
   end
 end

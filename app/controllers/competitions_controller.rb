@@ -1,4 +1,5 @@
 class CompetitionsController < ApplicationController
+  before_filter :authenticate_user!, :except => [:index,:show]
   # GET /competitions
   # GET /competitions.json
   def index
@@ -24,12 +25,11 @@ class CompetitionsController < ApplicationController
   # GET /competitions/new
   # GET /competitions/new.json
   def new
-    @competition = Competition.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @competition }
-    end
+	@competition = Competition.new
+	respond_to do |format|
+	  format.html # new.html.erb
+	  format.json { render json: @competition }
+	end
   end
 
   # GET /competitions/1/edit
@@ -40,32 +40,40 @@ class CompetitionsController < ApplicationController
   # POST /competitions
   # POST /competitions.json
   def create
-    @competition = Competition.new(params[:competition])
-
-    respond_to do |format|
-      if @competition.save
-        format.html { redirect_to @competition, notice: 'Competition was successfully created.' }
-        format.json { render json: @competition, status: :created, location: @competition }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @competition.errors, status: :unprocessable_entity }
-      end
-    end
+	@competition = Competition.new(params[:competition])
+	respond_to do |format|
+		if user_signed_in? and current_user.isadmin
+		  @competition.User_id=current_user.id
+		  if @competition.save
+		    format.html { redirect_to @competition, notice: 'Competition was successfully created.' }
+		    format.json { render json: @competition, status: :created, location: @competition }
+		  else
+		    format.html { render action: "new" }
+		    format.json { render json: @competition.errors, status: :unprocessable_entity }
+		  end
+		else
+			redirect_to competitions_path, status: 'Only admins can create competitions.' 
+		end
+	end
   end
 
   # PUT /competitions/1
   # PUT /competitions/1.json
   def update
     @competition = Competition.find(params[:id])
-
     respond_to do |format|
-      if @competition.update_attributes(params[:competition])
-        format.html { redirect_to @competition, notice: 'Competition was successfully updated.' }
-        format.json { head :ok }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @competition.errors, status: :unprocessable_entity }
-      end
+      if user_signed_in? and current_user.id == @competition.User_id 
+        @competition.User_id=current_user.id
+		if @competition.update_attributes(params[:competition])
+		  format.html { redirect_to @competition, notice: 'Competition was successfully updated.' }
+		  format.json { head :ok }
+		else
+		  format.html { render action: "edit" }
+		  format.json { render json: @competition.errors, status: :unprocessable_entity }
+		end
+	  else
+		redirect_to competitions_path, status: 'Only admin owners can modify competitions.' 
+	  end
     end
   end
 
@@ -73,11 +81,14 @@ class CompetitionsController < ApplicationController
   # DELETE /competitions/1.json
   def destroy
     @competition = Competition.find(params[:id])
-    @competition.destroy
-
-    respond_to do |format|
-      format.html { redirect_to competitions_url }
-      format.json { head :ok }
-    end
+    if user_signed_in? and current_user.id == @competition.User_id
+		@competition.destroy
+		respond_to do |format|
+		  format.html { redirect_to competitions_url }
+		  format.json { head :ok }
+		end
+	else
+      redirect_to competitions_path, status: 'Only admin owners can destroy competitions.' 
+	end
   end
 end

@@ -20,24 +20,68 @@
   <%= @dataset.description %>
 </p>
 
+<hr/>
+
+<table><tr>
+<td>
+<%= button_to 'All Datasets', datasets_path,method: :get %>
+</td>
+<td>
+<% if user_signed_in? and @dataset.User_id==current_user.id%>
+<%= button_to 'Edit', edit_dataset_path(@dataset),method: :get %> 
+<% else %>
+<%= button_to 'Edit', edit_dataset_path(@dataset),:disabled => true %> 
+<% end %>
+</td>
+<td>
+<% if user_signed_in? and @dataset.User_id==current_user.id%>
+<%= button_to 'Destroy', @dataset,method: :delete %> 
+<% else %>
+<%= button_to 'Destroy', @dataset,method: :delete,:disabled => true %> 
+<% end %>
+</td>
+<td>
+<% if (user_signed_in?) and ((@dataset.User_id==current_user.id) or (@dataset.gtpublic and @dataset.inputpublic and current_user.isadmin))%>
+<%= button_to 'Clone', copy_dataset_path(@dataset),method: :post %> 
+<%else%>
+<%= button_to 'Clone', copy_dataset_path(@dataset),method: :post,:disabled => true %> 
+<% end %>
+</td>
+</tr></table>
+
+
+
 <% if (@dataset.inputpublic and @dataset.gtpublic) or ((user_signed_in?)and( current_user.id==@dataset.User_id)) %>
+<hr/>
 <p><b>Associated Chalenges:</b>
 <table>
   <tr>
     <th>Name</th>
 	<th>Input</th>
     <th>Groundtruth</th>
+	<th></th>
+	<th></th>
+	<th></th>
   </tr>
   <% Chalenge.find(:all,:conditions => { :Dataset_id => @dataset.id}).each do |chalenge| %>
-  <tr>
+  <tr> 
   <td><%= chalenge.name %></td>
   <td><%= link_to(image_tag(url_for(showinput_chalenge_path(chalenge)),:style => "width:100px"),showinput_chalenge_path(chalenge)) %></td>
   <td><%= link_to(image_tag(url_for(showgt_chalenge_path(chalenge)),:style => "width:100px"),showgt_chalenge_path(chalenge)) %></td>
+  <td><%= button_to 'View',chalenge,method: :get %></td>
+  <%if user_signed_in? and current_user.isadmin and current_user.id ==@dataset.User_id %>
+  <td><%= button_to 'Edit',edit_chalenge_path(chalenge),method: :get%></td>
+  <td><%= button_to 'Destroy',chalenge,method: :delete%></td>
+  <%else%>
+  <td><%= button_to 'Edit',edit_chalenge_path(chalenge),method: :get,:disabled => true%></td>
+  <td><%= button_to 'Destroy',chalenge,method: :delete,:disabled => true%></td>
+  <%end%>
   </tr>
   <% end %>
 </table>
 </p>
 <%  elsif  @dataset.inputpublic and not(@dataset.gtpublic)%>
+<hr/>
 <p><b>Associated Chalenges:</b>
 <table>
   <tr>
@@ -55,6 +99,7 @@
 </table>
 </p>
 <%  elsif  not(@dataset.inputpublic) and (@dataset.gtpublic)%>
+<hr/>
 <p><b>Associated Chalenges:</b>
 <table>
   <tr>
@@ -71,9 +116,6 @@
   <% end %>
 </table>
 </p>
+<% end %>
 
-<% end %>
-<% if user_signed_in? and @dataset.User_id==current_user.id%>
-<%= link_to 'Edit', edit_dataset_path(@dataset) %> |
-<% end %>
-<%= link_to 'Back', datasets_path %>
+

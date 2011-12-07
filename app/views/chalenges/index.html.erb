@@ -11,6 +11,8 @@
     <th>Dataset</th>
     <th></th>
     <th></th>
+    <th></th>
+
   </tr>
 
 <% @chalenges.each do |chalenge| %>
@@ -36,14 +38,19 @@
 
     <td><%= button_to 'Show', chalenge , method: :get %></td>
 	<% if owns %>
-    <td><%= button_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= button_to 'Edit', edit_chalenge_path(chalenge), method: :get %></td>
+	<td><%= button_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete %></td>
 	<% else %>
-	<td></td>
+    <td><%= button_to 'Edit', edit_chalenge_path(chalenge), method: :get,:disabled => true %></td>
+	<td><%= button_to 'Destroy', chalenge, confirm: 'Are you sure?', method: :delete,:disabled => true %></td>
 	<% end %>
   </tr>
 <% end %>
 </table>
 
-<br />
-
-
+<hr />
+<% if user_signed_in? and current_user.isadmin and Dataset.find(:all,:conditions => { :User_id => current_user.id}).length > 0 %>
+<%= button_to 'New Chalenge', new_chalenge_path ,method: :get %>
+<%else%>
+<%= button_to 'New Chalenge', new_chalenge_path ,method: :get,:disabled=>true %>
+<%end%>

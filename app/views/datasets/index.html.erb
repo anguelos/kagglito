@@ -11,6 +11,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
 
 <% @datasets.each do |dataset| %>
@@ -26,13 +27,23 @@
     <td><%= button_to 'Edit', edit_dataset_path(dataset), method: :get %></td>
     <td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
 	<% else %>
-	<td></td>	<td></td>
+	<td><%= button_to 'Edit', edit_dataset_path(dataset), method: :get, :disabled =>true %></td>	
+	<td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete,:disabled =>true %></td>
 	<% end %>
+	<%if user_signed_in? and ((current_user.id==dataset.User_id) or (current_user.isadmin and dataset.gtpublic and dataset.inputpublic) )%>
+	<td>
+	<%= button_to 'Clone', copy_dataset_path(dataset),  method: :post %>
+	</td>
+	<%else%>
+	<td><%= button_to 'Clone', copy_dataset_path(dataset),  method: :post,:disabled=>true %></td>
+	<%end%>
   </tr>
 <% end %>
 </table>
 
 <br />
 <% if user_signed_in? and current_user.isadmin %>
-<%= link_to 'New Dataset', new_dataset_path %>
+<%= button_to 'New Dataset', new_dataset_path,method: :get %>
+<%else%>
+<%= button_to 'New Dataset', new_dataset_path,method: :get,:disabled =>true %>
 <% end %>

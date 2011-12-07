@@ -6,9 +6,9 @@ class CreateDatasets < ActiveRecord::Migration
       t.boolean :inputpublic
       t.text :description
       t.references :User
-
       t.timestamps
     end
 	add_index :datasets, :User_id
+	add_index :datasets, :name,:null => false, :unique => true
   end
 end

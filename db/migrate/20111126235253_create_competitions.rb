@@ -8,9 +8,12 @@ class CreateCompetitions < ActiveRecord::Migration
       t.boolean :publicscore
 	  t.references :User
       t.references :Dataset
+      t.references :Evaluator
       t.timestamps
     end
 	add_index :competitions, :User_id
 	add_index :competitions, :Dataset_id
+	add_index :competitions, :Evaluator_id
+	add_index :competitions, :name,:null => false, :unique => true
   end
 end

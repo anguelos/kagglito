@@ -34,12 +34,15 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
     t.boolean  "publicscore"
     t.integer  "User_id"
     t.integer  "Dataset_id"
+    t.integer  "Evaluator_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "competitions", ["Dataset_id"], :name => "index_competitions_on_Dataset_id"
+  add_index "competitions", ["Evaluator_id"], :name => "index_competitions_on_Evaluator_id"
   add_index "competitions", ["User_id"], :name => "index_competitions_on_User_id"
+  add_index "competitions", ["name"], :name => "index_competitions_on_name", :unique => true
 
   create_table "datasets", :force => true do |t|
     t.string   "name"
@@ -52,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
   end
 
   add_index "datasets", ["User_id"], :name => "index_datasets_on_User_id"
+  add_index "datasets", ["name"], :name => "index_datasets_on_name", :unique => true
 
   create_table "evaluators", :force => true do |t|
     t.string   "name"
@@ -65,9 +69,12 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
   end
 
   add_index "evaluators", ["User_id"], :name => "index_evaluators_on_User_id"
+  add_index "evaluators", ["name"], :name => "index_evaluators_on_name", :unique => true
 
   create_table "participations", :force => true do |t|
     t.boolean  "submissionspublic"
+    t.string   "name"
+    t.text     "description"
     t.integer  "User_id"
     t.integer  "Competition_id"
     t.datetime "created_at"
@@ -76,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
 
   add_index "participations", ["Competition_id"], :name => "index_participations_on_Competition_id"
   add_index "participations", ["User_id"], :name => "index_participations_on_User_id"
+  add_index "participations", ["name"], :name => "index_participations_on_name", :unique => true
 
   create_table "submissions", :force => true do |t|
     t.binary   "response"
@@ -84,17 +92,19 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
     t.datetime "submited"
     t.float    "score"
     t.integer  "Chalenge_id"
-    t.integer  "participation_id"
+    t.integer  "Participation_id"
+    t.integer  "User_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "submissions", ["Chalenge_id"], :name => "index_submissions_on_Chalenge_id"
-  add_index "submissions", ["participation_id"], :name => "index_submissions_on_participation_id"
+  add_index "submissions", ["Participation_id"], :name => "index_submissions_on_Participation_id"
+  add_index "submissions", ["User_id"], :name => "index_submissions_on_User_id"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.string   "email",                                 :default => "",    :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -107,7 +117,7 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
     t.datetime "updated_at"
     t.text     "profile"
     t.string   "password"
-    t.boolean  "isadmin"
+    t.boolean  "isadmin",                               :default => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

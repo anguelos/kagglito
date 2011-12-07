@@ -7,11 +7,12 @@ class CreateSubmissions < ActiveRecord::Migration
       t.datetime :submited
       t.float :score
       t.references :Chalenge
-      t.references :participation
-
+      t.references :Participation
+      t.references :User
       t.timestamps
     end
     add_index :submissions, :Chalenge_id
-    add_index :submissions, :participation_id
+    add_index :submissions, :Participation_id
+    add_index :submissions, :User_id
   end
 end

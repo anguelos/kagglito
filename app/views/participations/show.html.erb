@@ -1,18 +1,29 @@
 <p id="notice"><%= notice %></p>
 
+
 <p>
-  <b>Submissionspublic:</b>
+  <b>Name:</b><br>
+  <%= @participation.name %>
+</p>
+
+<p>
+  <b>Description:</b><br>
+  <%= @participation.description %>
+</p>
+
+<p>
+  <b>Publish Submissions:</b>
   <%= @participation.submissionspublic %>
 </p>
 
 <p>
-  <b>User:</b>
-  <%= @participation.User %>
+  <b>User:</b><br>
+  <%= @participation.User.email.split('@')[0] %>
 </p>
 
 <p>
-  <b>Competition:</b>
-  <%= @participation.Competition %>
+  <b>Competition:</b><br>
+  <%= @participation.Competition.name %>
 </p>
 
 

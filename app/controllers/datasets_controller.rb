@@ -49,6 +49,7 @@ class DatasetsController < ApplicationController
     end
   end
 
+
   # GET /datasets/1
   # GET /datasets/1.json
   def show
@@ -145,6 +146,46 @@ class DatasetsController < ApplicationController
 	end
   end
 
+
+  def copy
+	if user_signed_in? and current_user.isadmin
+		@dataset = Dataset.find(params[:id])
+		if (@dataset.inputpublic and @dataset.gtpublic) or current_user.id=@dataset.User_id
+			nds=Dataset.new
+			nds.User_id=current_user.id
+			nds.name=@dataset.name+current_user.email.split('@')[0]
+			nds.gtpublic=false
+			nds.inputpublic=false
+			nds.description="Copy of "+@dataset.name+"Original description:\n------\n"+@dataset.description
+			if nds.save
+				dstchalenges=[]
+				all_ok=true;
+				count=1
+				srcchalenges=Chalenge.find(:all,:conditions => { :Dataset_id => @dataset.id})
+				srcchalenges.each do |srcchal|
+					dstchal=Chalenge.new()
+					dstchal.Dataset_id=nds.id
+					dstchal.name=String(count)
+					dstchal.gt=srcchal.gt
+					dstchal.input=srcchal.input
+					dstchal.gtfileext=srcchal.gtfileext
+					dstchal.inputfileext=srcchal.inputfileext
+					dstchal.save
+					count=count+1;
+				end
+				redirect_to edit_dataset_path(nds) ,:notice => 'Dataset cloned successfuly.'
+			else
+			  print "\nCOPY 9\n\n"
+              redirect_to @dataset ,:alert => 'Could not copy Dataset.'
+			end
+		else
+			print "\nCOPY 10\n\n"
+		  redirect_to @dataset ,:alert => 'Could not copy Dataset its not public.'
+		end
+	else
+	  redirect_to @dataset ,:alert => 'Only administrators can create/copy Datasets.'
+	end
+  end
   # DELETE /datasets/1
   # DELETE /datasets/1.json
   def destroy

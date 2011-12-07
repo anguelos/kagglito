@@ -1,7 +1,7 @@
 class ChalengesController < ApplicationController
   # GET /chalenges
   # GET /chalenges.json
-
+  before_filter :authenticate_user!, :except => [:index,:show]
   def showgt
     @chalenge = Chalenge.find(params[:id])
 	ds=Dataset.find(@chalenge.Dataset_id)
@@ -71,58 +71,77 @@ class ChalengesController < ApplicationController
 
   # GET /chalenges/new
   # GET /chalenges/new.json
-#  def new
-#    @chalenge = Chalenge.new
-
-#    respond_to do |format|
-#      format.html # new.html.erb
-#      format.json { render json: @chalenge }
-#    end
-#  end
+  def new
+	if user_signed_in? and current_user.isadmin and Dataset.find(:all,:conditions => { :User_id => current_user.id}).length>0
+    @chalenge = Chalenge.new	
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @chalenge }
+    end
+	else
+		redirect_to chalenges_path,:alert => 'You must be an administrator owning at least one Dataset to create a chalenge.'
+	end
+  end
 
   # GET /chalenges/1/edit
-#  def edit
-#    @chalenge = Chalenge.find(params[:id])
-#  end
+  def edit
+    @chalenge = Chalenge.find(params[:id])
+  end
 
   # POST /chalenges
   # POST /chalenges.json
-#  def create
-#    @chalenge = Chalenge.new(params[:chalenge])
-
-#    respond_to do |format|
-#	  if current_user.isadmin
-#      if @chalenge.save
-#        format.html { redirect_to @chalenge, notice: 'Chalenge was successfully created.' }
-#        format.json { render json: @chalenge, status: :created, location: @chalenge }
-#      else
-#        format.html { render action: "new" }
-#        format.json { render json: @chalenge.errors, status: :unprocessable_entity }
-#      end
-#	  else
-#		redirect_to chalenges_path,:alert => 'You must be an administrator to'
-#	  end
-#    end
-#  end
-
-  # PUT /chalenges/1
-  # PUT /chalenges/1.json
-  def update
-    @chalenge = Chalenge.find(params[:id])
-	if current_user.id==Dataset.find(@chalenge.Dataset_id).User_id
-		respond_to do |format|
-		  if @chalenge.update_attributes(params[:chalenge])
-		    format.html { redirect_to @chalenge, notice: 'Chalenge was successfully updated.' }
-		    format.json { head :ok }
+  def create
+    @chalenge = Chalenge.new(params[:chalenge])
+    respond_to do |format|
+	  if current_user.isadmin and current_user.id==Dataset.find(@chalenge.Dataset_id).User_id
+		if params['gtfile'].present? and params['inputfile'].present?
+		  @chalenge.input=File.read(params['inputfile'].tempfile)
+		  @chalenge.inputfileext=params['inputfile'].original_filename.split('.')[-1]
+		  @chalenge.gt=File.read(params['gtfile'].tempfile)
+		  @chalenge.gtfileext=params['gtfile'].original_filename.split('.')[-1]
+		  if @chalenge.save
+			format.html { redirect_to @chalenge, notice: 'Chalenge was successfully created.' }
+			format.json { render json: @chalenge, status: :created, location: @chalenge }
 		  else
-		    format.html { render action: "edit" }
-		    format.json { render json: @chalenge.errors, status: :unprocessable_entity }
+			format.html { render action: "new" }
+			format.json { render json: @chalenge.errors, status: :unprocessable_entity }
 		  end
+		else
+		  redirect_to chalenges_path,:alert => 'You must upload an input and groundtruth file.'
 		end
-	else
-		redirect_to chalenges_path,:alert => 'You must own the dataset that contains a chalenge to edit it'
-	end
+	  else
+		redirect_to chalenges_path,:alert => 'You must be an administrator and own the dataset to which you add the chalenge.'
+	  end
+    end
   end
+
+
+  def update
+     @chalenge = Chalenge.find(params[:id])
+    respond_to do |format|
+	  if current_user.isadmin and current_user.id==Dataset.find(@chalenge.Dataset_id).User_id
+		if params['inputfile'].present?
+		  @chalenge.input=File.read(params['inputfile'].tempfile)
+		  @chalenge.inputfileext=params['inputfile'].original_filename.split('.')[-1]
+		end
+		if params['gtfile'].present?
+		  @chalenge.gt=File.read(params['gtfile'].tempfile)
+		  @chalenge.gtfileext=params['gtfile'].original_filename.split('.')[-1]
+		end
+		if @chalenge.update_attributes(params[:chalenge])
+		  format.html { redirect_to @chalenge, notice: 'Chalenge was successfully updated.' }
+		  format.json { head :ok }
+		else
+		  format.html { render action: "edit" }
+		  format.json { render json: @chalenge.errors, status: :unprocessable_entity }
+		end
+	  else
+		redirect_to chalenges_path,:alert => 'You must be an administrator and own the dataset to which you add the chalenge.'
+	  end
+    end
+  end
+
+
 
   # DELETE /chalenges/1
   # DELETE /chalenges/1.json

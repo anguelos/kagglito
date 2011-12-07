@@ -1,10 +1,27 @@
 <h1>Editing dataset</h1>
-
 <%= render 'form' %>
+<hr/>
 
-<%= link_to 'Show', @dataset %> |
-<%= link_to 'Back', datasets_path %>
 
+<table><tr>
+<td>
+<%= button_to 'All Datasets', datasets_path,method: :get %>
+</td>
+<td>
+
+<%= button_to 'View', @dataset,method: :get %> 
+</td>
+<td>
+<%= button_to 'Destroy', @dataset,method: :delete %> 
+</td>
+<td>
+<%= button_to 'Clone', copy_dataset_path(@dataset),method: :post %> 
+</td>
+</tr></table>
+
+
+
+<hr/>
 <p>
 <b>Associated chalenges</b>
 <table>
@@ -12,6 +29,9 @@
     <th>Name</th>
 	<th>Input</th>
     <th>Groundtruth</th>
+	<th></th>
+	<th></th>
+	<th></th>
   </tr>
 
   <% Chalenge.find(:all,:conditions => { :Dataset_id => @dataset.id}).each do |chalenge| %>
@@ -19,6 +39,14 @@
   <td><%= chalenge.name %></td>
   <td><%= link_to(image_tag(url_for(showinput_chalenge_path(chalenge)),:style => "width:100px"),showinput_chalenge_path(chalenge)) %></td>
   <td><%= link_to(image_tag(url_for(showgt_chalenge_path(chalenge)),:style => "width:100px"),showgt_chalenge_path(chalenge)) %></td>
+  <td><%=button_to 'View',chalenge,method: :get %></td>
+  <%if user_signed_in? and current_user.id== @dataset.User_id %>
+  <td><%=button_to 'Edit',edit_chalenge_path(chalenge),method: :get %></td>
+  <td><%=button_to 'Destroy',chalenge,method: :delete %></td>
+  <%else%>
+  <td><%=button_to 'Edit',edit_chalenge_path(chalenge),method: :get,:disabled=>true %></td>
+  <td><%=button_to 'Destroy',chalenge,method: :delete ,:disabled=>true%></td>
+  <%end%>
   </tr>
   <% end %>
 </table>

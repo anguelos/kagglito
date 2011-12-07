@@ -12,16 +12,25 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :submissionspublic %><br />
+    <%= f.label 'Name:' %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Description:' %><br />
+    <%= f.text_area :description %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Publish submissions:' %><br />
     <%= f.check_box :submissionspublic %>
   </div>
   <div class="field">
-    <%= f.label :User %><br />
-    <%= f.text_field :User %>
-  </div>
-  <div class="field">
-    <%= f.label :Competition %><br />
-    <%= f.text_field :Competition %>
+    <%= f.label 'Competition:' %><br />
+	<% compList =[] ;Competition.find(:all).each do |comp|%>
+	<% compList=compList+[[comp.name ,comp.id]]%>
+	<% end %>
+    <%= f.select :Competition_id , options_for_select(compList) %>
   </div>
   <div class="actions">
     <%= f.submit %>

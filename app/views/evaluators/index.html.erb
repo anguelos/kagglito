@@ -16,14 +16,14 @@
 <% @evaluators.each do |evaluator| %>
   <tr>
     <td><%= evaluator.name %></td>
-    <td><%= evaluator.description %></td>
+    <td><%= evaluator.description[0..30] %></td>
     <td><%= evaluator.minvalue %></td>
     <td><%= evaluator.maxvalue %></td>
-    <td><%= evaluator.src %></td>
-    <td><%= evaluator.User %></td>
-    <td><%= link_to 'Show', evaluator %></td>
-    <td><%= link_to 'Edit', edit_evaluator_path(evaluator) %></td>
-    <td><%= link_to 'Destroy', evaluator, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= evaluator.src[0..10] %></td>
+    <td><%= User.find(evaluator.User_id).email.split('@')[0] %></td>
+    <td><%= button_to 'Show', evaluator, method: :get %></td>
+    <td><%= button_to 'Edit', edit_evaluator_path(evaluator), method: :get %></td>
+    <td><%= button_to 'Destroy', evaluator, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
 <% end %>
 </table>
