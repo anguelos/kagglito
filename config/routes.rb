@@ -17,13 +17,18 @@ Kagglito::Application.routes.draw do
 
   resources :participations
 
-  resources :competitions
+  resources :competitions do
+	member do
+		post :participate
+	end
+  end
 
   resources :evaluators
 
   resources :datasets do
 	member do
 		post :copy
+	#	get :myindex
 	end
   end
 
@@ -36,7 +41,12 @@ Kagglito::Application.routes.draw do
   match '/help', :to => 'pages#help'
   
   match '/signup', :to => 'users#new'
-  
+
+  match '/mydatasets',:to => 'datasets#myindex'
+  match '/myevaluators',:to => 'evaluators#myindex'
+  match '/mycompetitons',:to => 'competitions#myindex'
+  match '/myparticipations',:to => 'participations#myindex'
+
   # just remember to delete public/index.html.
   root :to => 'pages#home' 
   

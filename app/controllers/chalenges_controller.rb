@@ -1,7 +1,7 @@
 class ChalengesController < ApplicationController
   # GET /chalenges
   # GET /chalenges.json
-  before_filter :authenticate_user!, :except => [:index,:show]
+  before_filter :authenticate_user!, :except => [:index,:show,:showgt,:showinput]
   def showgt
     @chalenge = Chalenge.find(params[:id])
 	ds=Dataset.find(@chalenge.Dataset_id)

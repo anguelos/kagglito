@@ -18,7 +18,7 @@
 
 <p>
   <b>User:</b><br>
-  <%= @participation.User.email.split('@')[0] %>
+  <%= User.find(@participation.User_id).email.split('@')[0] %>
 </p>
 
 <p>

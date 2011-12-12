@@ -1,37 +1,6 @@
     <header>
-      <% logo = image_tag("logo.png", :alt => "IT Competitions", :class => "round") %>
-      <%= link_to logo, root_path %>
-      <nav class="round">
-        <ul>
-		<li>Session:</li>
-        <li>  <!--anguelos start proposed by devise -->
-        <% if user_signed_in? %>
-		Signed in as
-		<% if current_user.isadmin%>
-		<font color="red">
-		<% end %>
-	     <%= current_user.email.split('@')[0] %>
-		<% if current_user.isadmin %>
-		</font>
-		<% end %>
-		<%= link_to "Sign out", destroy_user_session_path,:method => :post %>
-        <% else %>
-        <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
-        <% end %>
-	  <!--anguelos end proposed by devise -->
-        </li>
-
-        <% if ((user_signed_in? )and (current_user.isadmin)) %>
-		<li>
-		<%= link_to "My Datasets" ,%>
-		</li>
-		<% end %>
-
-
-        </ul>
-      </nav>
-	  <nav class="round">
-	  <ul>
+    	  <nav class="left">
+	  <ul class="vertical">
         <li><%= link_to "Home", root_path %></li>
 		<%if user_signed_in? and (current_user.id == User.find(:all,:limit=>1)[0].id )%>
 		<li><%= link_to "Administrators", manageadmin_path %></li>
@@ -47,4 +16,50 @@
         <li><%= link_to "Help", help_path %></li>
 	  </ul>
 	  </nav>
+
+
+      <nav class="right">
+        <ul class="horizontal">
+		<b>
+		<li>Session:</li>
+        <li>  <!--anguelos start proposed by devise -->
+        <% if user_signed_in? %>
+		Signed in as
+		<% if current_user.isadmin%>
+		<font color="red">
+		<% end %>
+	     <%= current_user.email.split('@')[0] %>
+		<% if current_user.isadmin %>
+		</font>
+		<% end %>
+		<%= link_to "Sign out", destroy_user_session_path,:method => :post %>
+        <% else %>
+        <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
+        <% end %>
+		</b>
+	  <!--anguelos end proposed by devise -->
+        </li>
+
+        <% if ((user_signed_in? )and (current_user.isadmin)) %>
+		<li>
+		<%= link_to "My Datasets" ,mydatasets_path,:method=>:get %>
+		</li>
+		<li>
+		<%= link_to "My Competions" ,mycompetitons_path,:method=>:get %>
+		</li>
+		<li>
+		<%= link_to "My Evaluators" ,myevaluators_path,:method=>:get %>
+		</li>
+		<% end %>
+		<%if user_signed_in?%>
+		<li>
+		<%= link_to "My Participations" ,myparticipations_path,:method=>:get %>
+		</li>
+		<%end%>
+        </ul>
+      </nav>
+    
+        <% logo = image_tag("logo.png", :alt => "IT Competitions", :class => "logo") %>
+      <%= link_to logo, root_path %>
+  
     </header>

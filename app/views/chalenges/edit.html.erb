@@ -42,8 +42,20 @@
 <% end %>
 
 <hr/>
-<table><tr><td>
-<%= button_to 'Show', @chalenge,method: :get %> 
-</td><td>
+<table><tr>
+<td>
 <%= button_to 'All Chalenges', chalenges_path,method: :get %>
-</td></tr></table>
+</td>
+<td>
+<%= button_to 'Show', @chalenge,method: :get %> 
+</td>
+<%if user_signed_in? and current_user.id ==Dataset.find(@chalenge.Dataset_id).User_id %>
+<td>
+<%= button_to 'Destroy', @chalenge,method: :delete %> 
+</td>
+<%else%>
+<td>
+<%= button_to 'Destroy', @chalenge,method: :delete,:disabled => true %> 
+</td>
+<%end%>
+</tr></table>

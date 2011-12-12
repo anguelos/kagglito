@@ -66,6 +66,16 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def myindex
+    @submissions = Submission.find(:all,:conditions => { :User_id => current_user.id})
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @submissions }
+    end
+  end
+
+
+
   # GET /submissions/1
   # GET /submissions/1.json
   def show

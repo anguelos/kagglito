@@ -10,6 +10,14 @@ class CompetitionsController < ApplicationController
       format.json { render json: @competitions }
     end
   end
+  def myindex
+    @competitions = Competition.find(:all,:conditions =>{:User_id => current_user.id})
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @competitions }
+    end
+  end
+
 
   # GET /competitions/1
   # GET /competitions/1.json
@@ -39,6 +47,32 @@ class CompetitionsController < ApplicationController
 
   # POST /competitions
   # POST /competitions.json
+  def participate
+	@competition = Competition.find(params[:id])
+	print '{',Time.now,'}'
+	print '{',String(@competition.endtime),'}'
+	if Time.now < @competition.endtime
+		ds=Dataset.find(@competition.Dataset_id)
+		chalenges=Chalenge.find(:all,:conditions => { :Dataset_id => ds.id})
+		part=Participation.new()
+		part.name=current_user.email.split('@')[0]+'.'+@competition.name+'.'+String(part.id)
+		part.description='Insert a brief description of your method here.'
+		part.Competition_id=@competition.id
+		part.User_id=current_user.id
+		part.save
+		chalenges.each do |chalenge|
+			sub=Submission.new
+			sub.Participation_id=part.id
+			sub.Chalenge_id=chalenge.id
+			sub.save
+		end
+		redirect_to edit_participation_path(part),:notice => 'Subscription succesfull.'		
+	else
+		redirect_to competitions_path,:alert => 'You cant sucscribe, competition has expired'
+	end
+  end
+
+
   def create
 	@competition = Competition.new(params[:competition])
 	respond_to do |format|

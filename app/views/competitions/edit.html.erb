@@ -1,6 +1,11 @@
 <h1>Editing competition</h1>
 
 <%= render 'form' %>
+<hr/>
+<table><tr>
+<td><%= button_to 'All Competitions',competitions_path,method: :get %></td>
+<td><%= button_to 'Show',@competition,method: :get %></td>
+<td><%= button_to 'Destroy',@competition,method: :destroy %></td>
+<td><%= button_to 'Subscribe',participate_competition_path,method: :post %></td>
+</tr></table>
 
-<%= link_to 'Show', @competition %> |
-<%= link_to 'Back', competitions_path %>

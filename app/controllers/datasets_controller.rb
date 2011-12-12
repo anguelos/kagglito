@@ -49,6 +49,14 @@ class DatasetsController < ApplicationController
     end
   end
 
+  def myindex
+    @datasets = Dataset.find(:all,:conditions => { :User_id => current_user.id})
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @datasets }
+    end
+  end
+
 
   # GET /datasets/1
   # GET /datasets/1.json

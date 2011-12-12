@@ -12,6 +12,15 @@ class EvaluatorsController < ApplicationController
     end
   end
 
+  def myindex
+    @evaluators = Evaluator.find(:all,:conditions =>{:User_id => current_user.id})
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @evaluators }
+    end
+  end
+
   # GET /evaluators/1
   # GET /evaluators/1.json
   def show

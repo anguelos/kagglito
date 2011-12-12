@@ -30,6 +30,16 @@
   <%= User.find(@evaluator.User_id).email.split('@')[0] %>
 </p>
 
+<table><tr>
+<td><%= button_to "All Evaluators",evaluators_path,method: :get %></td>
+<%if user_signed_in? and current_user.id == @evaluator.User_id %>
+<td><%= button_to "Edit",edit_evaluator_path(@evaluator),method: :get %></td>
+<td><%= button_to "Destroy",@evaluator,method: :delete %></td>
+<%else%>
+<td><%= button_to "Edit",edit_evaluator_path(@evaluator),method: :get,:disabled=>true  %></td>
+<td><%= button_to "Destroy",@evaluator,method: :delete,:disabled=>true %></td>
+<%end%>
 
-<%= link_to 'Edit', edit_evaluator_path(@evaluator) %> |
-<%= link_to 'Back', evaluators_path %>
+</tr></table>
+
+

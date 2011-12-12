@@ -1,0 +1,49 @@
+<h1>Listing datasets owned by <%= current_user.email.split('@')[0] %> </h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+	<th>Description</th>
+    <th>Publish groundtruths</th>
+    <th>Publish inputs</th>
+    <th>Owner</th>
+	<th>Nb Chalenges</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @datasets.each do |dataset| %>
+  <tr>
+    <td><%= dataset.name %></td>
+	<td><%= dataset.description %></td>
+    <td><%= dataset.gtpublic %></td>
+    <td><%= dataset.inputpublic %></td>
+	<td><%= User.find(dataset.User_id).email.split('@')[0] %></td>
+	<td><%= String(Chalenge.find(:all,:conditions => { :Dataset_id => dataset.id}).length) %></td>
+    <td><%= button_to 'Show', dataset, method: :get %></td>
+	<% if user_signed_in? and dataset.User_id == current_user.id %>
+    <td><%= button_to 'Edit', edit_dataset_path(dataset), method: :get %></td>
+    <td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete %></td>
+	<% else %>
+	<td><%= button_to 'Edit', edit_dataset_path(dataset), method: :get, :disabled =>true %></td>	
+	<td><%= button_to 'Destroy', dataset, confirm: 'Are you sure?', method: :delete,:disabled =>true %></td>
+	<% end %>
+	<%if user_signed_in? and ((current_user.id==dataset.User_id) or (current_user.isadmin and dataset.gtpublic and dataset.inputpublic) )%>
+	<td>
+	<%= button_to 'Clone', copy_dataset_path(dataset),  method: :post %>
+	</td>
+	<%else%>
+	<td><%= button_to 'Clone', copy_dataset_path(dataset),  method: :post,:disabled=>true %></td>
+	<%end%>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<% if user_signed_in? and current_user.isadmin %>
+<%= button_to 'New Dataset', new_dataset_path,method: :get %>
+<%else%>
+<%= button_to 'New Dataset', new_dataset_path,method: :get,:disabled =>true %>
+<% end %>

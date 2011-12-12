@@ -10,6 +10,14 @@ class ParticipationsController < ApplicationController
     end
   end
 
+  def myindex
+    @participations = Participation.find(:all,:conditions =>{:User_id => current_user.id})
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @participations }
+    end
+  end
+
   # GET /participations/1
   # GET /participations/1.json
   def show
@@ -80,9 +88,9 @@ class ParticipationsController < ApplicationController
   def update
     @participation = Participation.find(params[:id])
 	if user_signed_in? and current_user.id==@participation.User_id
-		comp_id=@participation.Competiton_id
+		comp_id=@participation.Competition_id
 		respond_to do |format|
-		  if comp_id==@participation.Competiton_id
+		  if comp_id==@participation.Competition_id
 			  if @participation.update_attributes(params[:participation])
 				format.html { redirect_to @participation, notice: 'Participation was successfully updated.' }
 				format.json { head :ok }

@@ -42,8 +42,24 @@
 <%=User.find(@competition.User_id).email.split('@')[0] %>
 </p>
 
-<% if current_user.id == @competition.User_id %>
-<%= link_to 'Edit', edit_competition_path(@competition) %> |
+<hr/>
+<table><tr>
+<td><%= button_to 'All Competitons', competitions_path,method: :get %></td>
+<% if user_signed_in? and current_user.id == @competition.User_id %>
+<td><%= button_to 'Edit', edit_competition_path(@competition),method: :get %> </td>
+<td><%= button_to 'Destroy', @competition,method: :delete %> </td>
+<%else%>
+<td><%= button_to 'Edit', edit_competition_path(@competition),method: :get,:disabled =>true %> </td>
+<td><%= button_to 'Destroy', @competition,method: :delete,:disabled=>true %> </td>
 <% end %>
-
-<%= link_to 'Back', competitions_path %>
+<%if user_signed_in?%>
+<td><%= button_to 'Subscribe',participate_competition_path,method: :post %></td>
+<%else%>
+<td><%= button_to 'Subscribe',participate_competition_path,method: :post,:disabled =>true %></td>
+<%end%>
+</tr></table>
+<hr/>
+<p>
+<b>Nuber of Subscriptions:</b>
+<%= String(Participation.find(:all,:conditions=>{:Competition_id => @competition.id}).length)%>
+</p>

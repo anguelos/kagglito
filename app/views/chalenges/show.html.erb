@@ -14,7 +14,7 @@
 <p>
   <table ><tr><td><b>Input:</b></td></tr><tr><td>
   <% if (ds.inputpublic )or owns %>
-  <%= link_to(image_tag(url_for(showinput_chalenge_path(@chalenge)),:style => "width:650px"),showinput_chalenge_path(@chalenge)) %>
+  <%= link_to(image_tag(url_for(showinput_chalenge_path(@chalenge)),:style => "width:910px"),showinput_chalenge_path(@chalenge)) %>
   <% else %>
   Not authorised to view
   <% end %>
@@ -24,7 +24,7 @@
 <p>
   <table ><tr><td><b>Groundtruth:</b></td></tr><tr><td>
   <% if (ds.gtpublic )or owns %>
-  <%= link_to(image_tag(url_for(showgt_chalenge_path(@chalenge)),:style => "width:650px") ,showgt_chalenge_path(@chalenge) )%>
+  <%= link_to(image_tag(url_for(showgt_chalenge_path(@chalenge)),:style => "width:910px") ,showgt_chalenge_path(@chalenge) )%>
   <% else %>
   Not authorised to view
   <% end %>
@@ -37,12 +37,12 @@
 
 <%if user_signed_in? and Dataset.find(@chalenge.Dataset_id).User_id==current_user.id %>
 </td><td>
-<%= button_to 'Edit', edit_chalenge_path(@chalenge),method: :post %>
+<%= button_to 'Edit', edit_chalenge_path(@chalenge),method: :get %>
 </td><td>
 <%= button_to 'Destroy', @chalenge,method: :delete %>
 <%else%>
 </td><td>
-<%= button_to 'Edit', edit_chalenge_path(@chalenge),method: :post,:disabled=>true %>
+<%= button_to 'Edit', edit_chalenge_path(@chalenge),method: :get,:disabled=>true %>
 </td><td>
 <%= button_to 'Destroy', @chalenge,method: :delete,:disabled=>true %>
 <%end%>

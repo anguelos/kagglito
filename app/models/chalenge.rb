@@ -3,5 +3,7 @@ class Chalenge < ActiveRecord::Base
   has_many :Submissions #responds to
   validates_uniqueness_of :name
   validates_presence_of :name
-
+  def ownerId
+	return @Dataset_id
+  end
 end
