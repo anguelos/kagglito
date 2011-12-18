@@ -22,7 +22,7 @@ class ChalengesController < ApplicationController
 		elsif gtFext=='csv'
 		    gtmime='file/csv'
 		end
-		send_data @chalenge.gt, :type => gtmime,:disposition => 'inline'
+		send_data @chalenge.gt, :type => gtmime,:disposition => 'attachement; filename=' << @chalenge.gtfilename
 	end
   end
 
@@ -46,7 +46,7 @@ class ChalengesController < ApplicationController
 		elsif inputFext=='csv'
 		    inputmime='file/csv'
 		end
-		send_data @chalenge.input, :type => inputmime,:disposition => 'inline'
+		send_data @chalenge.input, :type => inputmime,:disposition => 'attachement; filename=' << @chalenge.inputfilename
 	end  
   end
 

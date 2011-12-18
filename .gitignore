@@ -3,4 +3,8 @@ db/*.sqlite3
 log/*.log
 tmp/
 .sass-cache/
+<<<<<<< HEAD
 /nbproject/private/
+=======
+Gemfile.lock
+>>>>>>> d0e3d917614d852a66527a7fbf2dfce3aa64e3c8

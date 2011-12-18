@@ -26,13 +26,16 @@ class DatasetsController < ApplicationController
 					fdata=zip_file.read(f.name)
 					if f.name[-1]!='/' && f.name.split('/')[-1].split('.').length()>=2
 						dname=f.name.split('.')[-3]
+
 						if f.name.split('/')[-1].split('.')[-2]=='in'
 							allData[dname]['in']=fdata
+							allData[dname]['inFname'] = f.name
 							allData[dname]['inFnameExt']=f.name.split('.')[-1]
 							allData[dname]['name']=f.name.split('.')[-3]
 						end
 						if f.name.split('/')[-1].split('.')[-2]=='gt'
 							allData[dname]['gt']=fdata
+              allData[dname]['gtFname'] = f.name
 							allData[dname]['gtFnameExt']=f.name.split('.')[-1]
 						end
 					end	
@@ -101,11 +104,13 @@ class DatasetsController < ApplicationController
 				|k|
 				chal=Chalenge.new()
 				chal.Dataset_id=@dataset.id
-				chal.name=@dataset.name+'.'+sprintf('%05d',count)
-				chal.input=chalAsDict[k]['in']
-				chal.gt=chalAsDict[k]['gt']
-				chal.inputfileext=chalAsDict[k]['inFnameExt']
-				chal.gtfileext=chalAsDict[k]['gtFnameExt']
+    		chal.name=@dataset.name+'.'+sprintf('%05d',count)
+    		chal.inputfilename=chalAsDict[k]['inFname']
+    		chal.input=chalAsDict[k]['in']
+    		chal.gt=chalAsDict[k]['gt']
+    		chal.gtfilename=chalAsDict[k]['gtFname']
+    		chal.inputfileext=chalAsDict[k]['inFnameExt']
+    		chal.gtfileext=chalAsDict[k]['gtFnameExt']
 				chal.save
 				count=count+1
 			end

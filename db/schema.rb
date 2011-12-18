@@ -16,8 +16,10 @@ ActiveRecord::Schema.define(:version => 20111127130623) do
   create_table "chalenges", :force => true do |t|
     t.binary   "gt"
     t.string   "gtfileext"
+    t.string   "gtfilename"
     t.binary   "input"
     t.string   "inputfileext"
+    t.string   "inputfilename"
     t.string   "name"
     t.integer  "Dataset_id"
     t.datetime "created_at"

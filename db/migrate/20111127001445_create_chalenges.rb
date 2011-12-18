@@ -3,8 +3,10 @@ class CreateChalenges < ActiveRecord::Migration
     create_table :chalenges do |t|
       t.binary :gt
       t.string :gtfileext
+      t.string :gtfilename
       t.binary :input
       t.string :inputfileext
+      t.string :inputfilename
       t.string :name
       t.references :Dataset
 
