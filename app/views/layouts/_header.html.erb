@@ -12,7 +12,7 @@
 		<li><%= link_to "Datasets", datasets_path %></li>
 		<li><%= link_to "Evaluators", evaluators_path %></li>
 		<li><%= link_to "Chalenges", chalenges_path %></li>
-		<li><%= link_to "Participations", participations_path %></li>
+		<li><%= link_to "Participations", participations_path %></li>                
         <li><%= link_to "Help", help_path %></li>
 	  </ul>
 	  </nav>
@@ -27,11 +27,13 @@
 		Signed in as
 		<% if current_user.isadmin%>
 		<font color="red">
+                <%else%>
+                <font color="blue">
 		<% end %>
 	     <%= current_user.email.split('@')[0] %>
-		<% if current_user.isadmin %>
+		
 		</font>
-		<% end %>
+		
 		<%= link_to "Sign out", destroy_user_session_path,:method => :post %>
         <% else %>
         <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
@@ -55,6 +57,7 @@
 		<li>
 		<%= link_to "My Participations" ,myparticipations_path,:method=>:get %>
 		</li>
+                <li><%= link_to "Submissions", submissions_path %></li>
 		<%end%>
         </ul>
       </nav>

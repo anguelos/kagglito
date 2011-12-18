@@ -1,8 +1,14 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <b>Chalenge:</b>
+  <%=  link_to(image_tag(url_for(showchalengeinput_submission_path(@submission)),:style => "width:910px"),showchalengeinput_submission_path(@submission)) %>
+</p>
+
+
+<p>
   <b>Response:</b>
-  <%= @submission.response %>
+  <%=  link_to(image_tag(url_for(showresponse_submission_path(@submission)),:style => "width:910px"),showresponse_submission_path(@submission)) %>
 </p>
 
 <p>
@@ -11,12 +17,12 @@
 </p>
 
 <p>
-  <b>Announced:</b>
+  <b>First viewed by contestant:</b>
   <%= @submission.announced %>
 </p>
 
 <p>
-  <b>Submited:</b>
+  <b>Final responce submited at:</b>
   <%= @submission.submited %>
 </p>
 
@@ -26,15 +32,15 @@
 </p>
 
 <p>
-  <b>Chalenge:</b>
-  <%= @submission.Chalenge %>
-</p>
-
-<p>
   <b>Participation:</b>
-  <%= @submission.participation %>
+  <%= link_to @submission.Participation.name,@submission.Participation %>
 </p>
 
-
-<%= link_to 'Edit', edit_submission_path(@submission) %> |
-<%= link_to 'Back', submissions_path %>
+<table><tr>
+    <td><%=  button_to 'All Submissions',submissions_path,method: :get %></td>
+    <%if @submission.Participation.Competition.endtime <Time.now and current_user.id==@submission.Participation.User_id %>
+    <td><%= button_to 'Update',edit_submission_path(@submission),method: :get %></td>
+    <%else%>
+    <td><%= button_to 'Update',edit_submission_path(@submission),method: :get,:disabled=>true %></td>
+    <%end%>
+</tr></table>

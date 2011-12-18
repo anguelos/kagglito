@@ -1,0 +1,57 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%><p>
+<b>Evaluator:</b> <%= @submission.Participation.Competition.Evaluator.name %>
+</p>
+<%
+
+
+def evaluateSubmission(subm)
+  require 'RMagick'
+  src=subm.Participation.Competition.Evaluator.src
+  response=subm.response
+  gt=subm.Chalenge.gt
+  input=subm.Chalenge.input
+    def blob2tmpPng(b)
+      img=Magick::Image.from_blob(b)
+      if img.class==Array
+        img=img[0]
+      end
+      img.format='PNG'
+      tmpFname='/tmp/kagglito_evaluate_'+rand().to_s[2..-1]+'.png'
+      f=File.open(tmpFname,'wb' )
+      f.write(img.to_blob())
+      f.flush()
+      f.close()
+      return tmpFname
+    end
+    def blob2tmpSrc(b)
+      tmpFname='/tmp/kagglito_evaluate_'+rand().to_s[2..-1];
+      f=File.open(tmpFname,'wb')
+      b=b.split("\r\n").join("\n")
+      f.write(b)
+      f.flush()
+      f.close()
+      File.chmod(0755,tmpFname)
+      return tmpFname
+    end
+    src=blob2tmpSrc(src)
+    response=blob2tmpPng(response)
+    gt=blob2tmpPng(gt)
+    input=blob2tmpPng(input)
+    cmd=[src,response,gt,input].join(' ')    
+    subm.score=IO.popen(cmd).read.to_f
+    subm.save!
+end
+
+
+Submission.evaluateSubmission(@submission)
+#File.delete(gt)
+#File.delete(input)
+#File.delete(resp)
+
+%>
+<hr/>
+Res:
+<%= ((10000*@submission.score).to_i).to_f/100 %>%

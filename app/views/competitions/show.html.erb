@@ -27,39 +27,48 @@
 
 <p>
 
-<b>Dataset:</b>
-<%=Dataset.find(@competition.Dataset_id).name %>
+  <b>Dataset:</b>
+  <%=Dataset.find(@competition.Dataset_id).name %>
 </p>
 
 <p>
-<b>Evaluator:</b>
-<%=Evaluator.find(@competition.Evaluator_id).name %>
+  <b>Evaluator:</b>
+  <%=Evaluator.find(@competition.Evaluator_id).name %>
 </p>
 
 
 <p>
-<b>Host:</b>
-<%=User.find(@competition.User_id).email.split('@')[0] %>
+  <b>Host:</b>
+  <%=User.find(@competition.User_id).email.split('@')[0] %>
 </p>
 
 <hr/>
 <table><tr>
-<td><%= button_to 'All Competitons', competitions_path,method: :get %></td>
-<% if user_signed_in? and current_user.id == @competition.User_id %>
-<td><%= button_to 'Edit', edit_competition_path(@competition),method: :get %> </td>
-<td><%= button_to 'Destroy', @competition,method: :delete %> </td>
-<%else%>
-<td><%= button_to 'Edit', edit_competition_path(@competition),method: :get,:disabled =>true %> </td>
-<td><%= button_to 'Destroy', @competition,method: :delete,:disabled=>true %> </td>
-<% end %>
-<%if user_signed_in?%>
-<td><%= button_to 'Subscribe',participate_competition_path,method: :post %></td>
-<%else%>
-<td><%= button_to 'Subscribe',participate_competition_path,method: :post,:disabled =>true %></td>
-<%end%>
-</tr></table>
+    <td><%= button_to 'All Competitons', competitions_path,method: :get %></td>
+    
+    <% if user_signed_in? and current_user.id == @competition.User_id %>
+      <td><%= button_to 'Edit', edit_competition_path(@competition),method: :get %> </td>
+      <td><%= button_to 'Destroy', @competition,method: :delete %> </td>
+    <%else%>
+      <td><%= button_to 'Edit', edit_competition_path(@competition),method: :get,:disabled =>true %> </td>
+      <td><%= button_to 'Destroy', @competition,method: :delete,:disabled=>true %> </td>
+    <% end %>
+      
+    <%if user_signed_in?%>
+      <td><%= button_to 'Subscribe',participate_competition_path,method: :post %></td>
+    <%else%>
+      <td><%= button_to 'Subscribe',participate_competition_path,method: :post,:disabled =>true %></td>
+    <%end%>
+
+    <%if Time.now> @competition.endtime and user_signed_in? and current_user.id==@competition.User_id %>
+      <td><%=  button_to 'Evaluate', evaluateSubmissions_competition_path(@competition), method: :post %> </td>      
+    <%else%>
+      <td><%=  button_to 'Evaluate', evaluateSubmissions_competition_path(@competition),method: :post,:diasbled=>true %> </td>
+    <%end%>
+      
+  </tr></table>
 <hr/>
 <p>
-<b>Nuber of Subscriptions:</b>
-<%= String(Participation.find(:all,:conditions=>{:Competition_id => @competition.id}).length)%>
+  <b>Nuber of Subscriptions:</b>
+  <%= String(Participation.find(:all,:conditions=>{:Competition_id => @competition.id}).length)%>
 </p>

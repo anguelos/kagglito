@@ -25,7 +25,33 @@
   <b>Competition:</b><br>
   <%= @participation.Competition.name %>
 </p>
+<hr/>
+<table><tr>
+    <td>
+      <%= button_to 'All Participations', participations_path, %>
+    </td>    
+    <td>
+      <%if user_signed_in? and @participation.User_id==current_user.id%>
+        <%= button_to 'Edit', edit_participation_path(@participation),method: :get %>
+      <%else%>
+        <%= button_to 'Edit', edit_participation_path(@participation),method: :get,:disabled => true %>      
+      <%end%>
+    </td>
 
+    <td>
+      <%if user_signed_in? and @participation.User_id==current_user.id%>
+        <%= button_to 'Destroy', @participation,method: :delete %> 
+      <%else%>
+        <%= button_to 'Destroy', @participation,method: :delete %> 
+      <%end%> 
+    </td>
 
-<%= link_to 'Edit', edit_participation_path(@participation) %> |
-<%= link_to 'Back', participations_path %>
+    <td>
+      <%if user_signed_in? and @participation.User_id==current_user.id and @participation.Competition.starttime <Time.now and @participation.Competition.endtime > Time.now %>
+        <%= button_to 'Submit Interactive', chainsolutionget_participation_path(@participation),method: :get %> 
+      <%else%>
+        <%= button_to 'Submit Interactive', chainsolutionget_participation_path(@participation),method: :get,:disabled =>true %> 
+      <%end%> 
+    </td>   
+
+  </tr></table>

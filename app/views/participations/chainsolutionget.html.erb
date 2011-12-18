@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+<h1>Chalenge for <%= link_to @participation.name, @participation %> </h1>
+<hr/>
+<p>
+  <b>Chalenge:</b><br>
+  <%=  link_to(image_tag(url_for(showchalengeinput_submission_path(@submission)),:style => "width:910px"),showchalengeinput_submission_path(@submission)) %>
+</p>
+<hr\>
+<H2>Awnser:</h2>
+<%=  form_tag(chainsolutionsubmit_participation_path(@participation),:method =>:post, :multipart => true) do |f|  %>
+  <%#= hidden_field 'submission',String(@submission.id) %>
+  <%= hidden_field_tag(:Submission_id, @submission.id)  %>
+  <%= file_field_tag 'response' %> 
+  <p>
+  <%= submit_tag "Submit" %>
+  </p>
+<% end %>
+
+
+

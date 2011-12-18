@@ -1,3 +1,4 @@
+
 <%= form_for(@submission) do |f| %>
   <% if @submission.errors.any? %>
     <div id="error_explanation">
@@ -10,36 +11,13 @@
       </ul>
     </div>
   <% end %>
-
   <div class="field">
-    <%= f.label :response %><br />
-    <%= f.text_field :response %>
+    <%= label_tag 'upload response' %><br />
+    <%= file_field_tag :response %>
   </div>
-  <div class="field">
-    <%= f.label :responsefileext %><br />
-    <%= f.text_field :responsefileext %>
-  </div>
-  <div class="field">
-    <%= f.label :announced %><br />
-    <%= f.datetime_select :announced %>
-  </div>
-  <div class="field">
-    <%= f.label :submited %><br />
-    <%= f.datetime_select :submited %>
-  </div>
-  <div class="field">
-    <%= f.label :score %><br />
-    <%= f.text_field :score %>
-  </div>
-  <div class="field">
-    <%= f.label :Chalenge %><br />
-    <%= f.text_field :Chalenge %>
-  </div>
-  <div class="field">
-    <%= f.label :participation %><br />
-    <%= f.text_field :participation %>
-  </div>
+<p>
   <div class="actions">
     <%= f.submit %>
   </div>
+</p>
 <% end %>

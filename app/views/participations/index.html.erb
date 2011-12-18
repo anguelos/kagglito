@@ -22,7 +22,7 @@
     <td><%= Competition.find(participation.Competition_id).name[0..10] %></td>
 	<td><% String(Submission.find(:all,:conditions => { :Participation_id => participation.id}).length) %></td>
     <td><%= button_to 'Show', participation,method: :get %></td>
-	<% if current_user.id == participation.User_id %>
+	<% if user_signed_in? and current_user.id == participation.User_id %>
     <td><%= button_to 'Edit', edit_participation_path(participation),method: :get %></td>
     <td><%= button_to 'Destroy', participation, confirm: 'Are you sure?', method: :delete %></td>
 	<% else %>
@@ -34,5 +34,7 @@
 
 <br />
 <% if user_signed_in? %>
-<%= link_to 'New Participation', new_participation_path %>
+<%= button_to 'New Participation', new_participation_path,method: :get %>
+<%else%>
+<%= button_to 'New Participation', new_participation_path,method: :get,:disabled =>true  %>
 <% end %>

@@ -17,8 +17,6 @@ class CompetitionsController < ApplicationController
       format.json { render json: @competitions }
     end
   end
-
-
   # GET /competitions/1
   # GET /competitions/1.json
   def show
@@ -110,7 +108,14 @@ class CompetitionsController < ApplicationController
 	  end
     end
   end
-
+  def evaluateSubmissions
+    @competition= Competition.find(params[:id])
+    subm=@competition.Submissions
+    subm.each do |s|
+      Submission.evaluate(s)
+    end
+    redirect_to @competition,:notice=> 'All submissions have been scored'
+  end
   # DELETE /competitions/1
   # DELETE /competitions/1.json
   def destroy

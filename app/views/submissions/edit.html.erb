@@ -1,6 +1,50 @@
 <h1>Editing submission</h1>
 
+<p>
+  <b>Chalenge:</b>
+  <%=  link_to(image_tag(url_for(showchalengeinput_submission_path(@submission)),:style => "width:910px"),showchalengeinput_submission_path(@submission)) %>
+</p>
+
+
+<p>
+  <b>Response:</b>
+  <%=  link_to(image_tag(url_for(showresponse_submission_path(@submission)),:style => "width:910px"),showresponse_submission_path(@submission)) %>
+</p>
+
+<p>
+  <b>Responsefileext:</b>
+  <%= @submission.responsefileext %>
+</p>
+
+<p>
+  <b>First viewed by contestant:</b>
+  <%= @submission.announced %>
+</p>
+
+<p>
+  <b>Final responce submited at:</b>
+  <%= @submission.submited %>
+</p>
+
+<p>
+  <b>Score:</b>
+  <%= @submission.score %>
+</p>
+
+<p>
+  <b>Participation:</b>
+  <%= link_to @submission.Participation.name,@submission.Participation %>
+</p>
+
+<hr/>
+
 <%= render 'form' %>
 
-<%= link_to 'Show', @submission %> |
-<%= link_to 'Back', submissions_path %>
+<hr/>
+
+<table><tr>
+    <td><%=  button_to 'All Submissions',submissions_path,method: :get %></td>
+    
+    <td><%= button_to 'Show',@submission,method: :get %></td>
+    
+</tr></table>

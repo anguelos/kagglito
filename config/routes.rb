@@ -8,18 +8,32 @@ Kagglito::Application.routes.draw do
   end
  
  
-  resources :submissions
+  resources :submissions do
+    member do
+      get :showresponse
+      get :showchalengeinput
+      get :chalengepngclient
+      post:submitresponseclient
+    end
+  end
 
   devise_for :users
   #devise_for :users, :path_prefix => 'd'
 
   #resources :users
 
-  resources :participations
+  resources :participations do
+    member do
+      get :chainsolutionget
+      post:chainsolutionsubmit
+      get :listsubmissionsclient
+    end
+  end
 
   resources :competitions do
 	member do
 		post :participate
+    post :evaluateSubmissions
 	end
   end
 
@@ -46,6 +60,8 @@ Kagglito::Application.routes.draw do
   match '/myevaluators',:to => 'evaluators#myindex'
   match '/mycompetitons',:to => 'competitions#myindex'
   match '/myparticipations',:to => 'participations#myindex'
+  
+  match '/listparticipations',:to =>'participations#listclient'
 
   # just remember to delete public/index.html.
   root :to => 'pages#home' 
